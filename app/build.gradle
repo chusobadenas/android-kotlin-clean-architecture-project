@@ -1,0 +1,54 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+
+    defaultConfig {
+        applicationId "com.jesusbadenas.kotlin_clean_architecture_project"
+        minSdkVersion 19
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        warning 'InvalidPackage'
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+}
+
+dependencies {
+    final ANDROIDX_VERSION = '1.1.0'
+    final ANDROIDX_TEST_VERSION = '1.2.0'
+    final JUNIT_VERSION = '4.12'
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$KOTLIN_VERSION"
+    implementation "androidx.appcompat:appcompat:$ANDROIDX_VERSION"
+    implementation "androidx.core:core-ktx:$ANDROIDX_VERSION"
+
+    testImplementation "androidx.test:core:$ANDROIDX_TEST_VERSION"
+    testImplementation "junit:junit:$JUNIT_VERSION"
+}
