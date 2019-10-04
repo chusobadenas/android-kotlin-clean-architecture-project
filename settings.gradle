@@ -1,2 +1,2 @@
-include ':app'
+include ':domain', ':data', ':app'
 rootProject.name='kotlin-clean-architecture-project'

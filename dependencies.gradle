@@ -1,0 +1,50 @@
+ext {
+    // Android
+    minSdkVersion = 19
+    targetSdkVersion = 29
+    compileSdkVersion = 29
+    buildToolsVersion = "29.0.2"
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+    // Implementation
+    androidXVersion = '1.1.0'
+    butterknifeVersion = '10.2.0'
+    daggerVersion = '2.24'
+    glideVersion = '4.10.0'
+    jsr250Version = '1.0'
+    okHttp3Version = '3.14.3'
+    retrofitVersion = '2.6.1'
+    rxAndroidVersion = '2.1.1'
+    rxJavaVersion = '2.2.12'
+    timberVersion = '4.7.1'
+
+    androidXAppCompat = "androidx.appcompat:appcompat:$androidXVersion"
+    androidXCoreKtx = "androidx.core:core-ktx:$androidXVersion"
+    androidMaterial = "com.google.android.material:material:1.0.0"
+    androidRecyclerView = "androidx.recyclerview:recyclerview:1.0.0"
+    butterknife = "com.jakewharton:butterknife:$butterknifeVersion"
+    butterknifeCompiler = "com.jakewharton:butterknife-compiler:$butterknifeVersion"
+    dagger = "com.google.dagger:dagger:$daggerVersion"
+    daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
+    daggerAndroid = "com.google.dagger:dagger-android:$daggerVersion"
+    daggerAndroidProcessor = "com.google.dagger:dagger-android-processor:$daggerVersion"
+    daggerAndroidSupport = "com.google.dagger:dagger-android-support:$daggerVersion"
+    glide = "com.github.bumptech.glide:glide:$glideVersion"
+    glideCompiler = "com.github.bumptech.glide:compiler:$glideVersion"
+    jsr250 = "javax.annotation:jsr250-api:$jsr250Version"
+    kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$KOTLIN_VERSION"
+    loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$okHttp3Version"
+    retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    retrofitConverterGson = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    retrofitRxJava = "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    rxAndroid = "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+    rxJava = "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    timber = "com.jakewharton.timber:timber:$timberVersion"
+
+    // Testing
+    androidXTestVersion = '1.2.0'
+    junitVersion = '4.12'
+
+    androidXTestCore = "androidx.test:core:$androidXTestVersion"
+    jUnit = "junit:junit:$junitVersion"
+}

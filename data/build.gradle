@@ -1,41 +1,30 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.jesusbadenas.kotlin_clean_architecture_project"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner rootProject.ext.testInstrumentationRunner
     }
 
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    lintOptions {
-        warning 'InvalidPackage'
-    }
-
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
     }
 }
 
@@ -44,10 +33,6 @@ dependencies {
 
     implementation rootProject.ext.kotlin
     implementation rootProject.ext.androidXAppCompat
-    implementation rootProject.ext.androidXCoreKtx
-    implementation rootProject.ext.androidMaterial
-    implementation rootProject.ext.androidRecyclerView
-    implementation rootProject.ext.butterknife
     implementation rootProject.ext.dagger
     implementation rootProject.ext.daggerAndroid
     implementation rootProject.ext.daggerAndroidSupport
@@ -55,21 +40,13 @@ dependencies {
     implementation rootProject.ext.retrofit
     implementation rootProject.ext.retrofitConverterGson
     implementation rootProject.ext.retrofitRxJava
-    implementation rootProject.ext.glide
     implementation rootProject.ext.rxAndroid
     implementation rootProject.ext.rxJava
-    implementation rootProject.ext.timber
 
-    kapt rootProject.ext.butterknifeCompiler
     kapt rootProject.ext.daggerCompiler
     kapt rootProject.ext.daggerAndroidProcessor
-    kapt rootProject.ext.glideCompiler
 
-    compileOnly rootProject.ext.jsr250
-
-    testImplementation rootProject.ext.androidXTestCore
     testImplementation rootProject.ext.jUnit
 
-    implementation project(':data')
-    implementation project(':domain')
+    implementation project(":domain")
 }

@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">kotlin-clean-architecture-project</string>
+  <string name="app_name">Clean Architecture Boilerplate</string>
+  <string name="url">http://www.android10.org/</string>
+
+  <string name="activity_title_user_details">User Details</string>
+
+  <string name="btn_text_load_data">Load Sample Data</string>
+  <string name="btn_text_retry">Retry</string>
+
+  <string name="view_text_email">Email:</string>
+  <string name="view_text_followers">Followers:</string>
+  <string name="view_text_description">Description:</string>
+  <string name="view_cover_description">Cover</string>
+
+  <string name="progress_dialog_message">Loading…</string>
+  <string name="string_content_description">Non accessible view</string>
+
+  <!-- Exception messages -->
+  <string name="error_message_generic">An error has occurred</string>
+  <string name="error_title_generic">Oops!</string>
+
+  <!-- Main Activity -->
+  <string name="text_view">View</string>
+  <string name="text_collections">Collections</string>
+  <string name="user_image_description">User image</string>
 </resources>
