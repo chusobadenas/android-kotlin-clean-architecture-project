@@ -43,4 +43,5 @@ dependencies {
     kapt rootProject.ext.daggerAndroidProcessor
 
     testImplementation rootProject.ext.jUnit
+    testImplementation rootProject.ext.mockk
 }

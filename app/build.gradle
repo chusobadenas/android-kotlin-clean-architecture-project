@@ -69,6 +69,8 @@ dependencies {
 
     testImplementation rootProject.ext.androidXTestCore
     testImplementation rootProject.ext.jUnit
+    testImplementation rootProject.ext.mockk
+    testImplementation rootProject.ext.robolectric
 
     implementation project(':data')
     implementation project(':domain')
