@@ -15,10 +15,10 @@ import java.util.concurrent.TimeUnit
  */
 object Network {
 
-    const val API_BASE_URL = "https://raw.githubusercontent.com/"
-    const val CONNECT_TIMEOUT = 15000
-    const val READ_TIMEOUT = 20000
-    const val WRITE_TIMEOUT = 20000
+    private const val API_BASE_URL = "https://raw.githubusercontent.com/"
+    private const val CONNECT_TIMEOUT = 15000
+    private const val READ_TIMEOUT = 20000
+    private const val WRITE_TIMEOUT = 20000
 
     private fun createHttpClient(): OkHttpClient {
         val clientBuilder = OkHttpClient.Builder()

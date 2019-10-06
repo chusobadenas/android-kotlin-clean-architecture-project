@@ -2,11 +2,10 @@ package com.jesusbadenas.kotlin_clean_architecture_project.common
 
 import android.content.Context
 import android.content.DialogInterface
-import androidx.fragment.app.Fragment
 import com.jesusbadenas.kotlin_clean_architecture_project.R
 
 /**
- * Base [Fragment] class for MVP views.
+ * [BaseFragment] class for MVP views.
  */
 abstract class BaseMvpFragment : BaseFragment(), MvpView {
 
@@ -26,7 +25,7 @@ abstract class BaseMvpFragment : BaseFragment(), MvpView {
         // No-op by default
     }
 
-    override fun showError(message: String, action: DialogInterface.OnClickListener?) {
+    override fun showError(message: String?, action: DialogInterface.OnClickListener?) {
         val title = context().getString(R.string.error_title_generic)
         DialogFactory.showDialog(
             context(),

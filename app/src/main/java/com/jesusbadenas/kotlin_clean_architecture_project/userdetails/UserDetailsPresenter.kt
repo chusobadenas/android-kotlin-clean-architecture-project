@@ -42,7 +42,7 @@ constructor(
     }
 
     private fun getUserDetails(userId: Int) {
-        val params: Map<String, Int> = mapOf("id" to userId)
+        val params: Map<String, Int> = hashMapOf("id" to userId)
         getUserDetailsUseCase.execute(UserDetailsSubscriber(), params)
     }
 

@@ -36,7 +36,7 @@ interface MvpView {
      * @param message A string representing an error.
      * @param action  the action to perform (optional).
      */
-    fun showError(message: String, action: DialogInterface.OnClickListener?)
+    fun showError(message: String?, action: DialogInterface.OnClickListener?)
 
     /**
      * Get a [android.content.Context].

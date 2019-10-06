@@ -19,6 +19,6 @@ class MainActivity : BaseActivity() {
 
     @OnClick(R.id.btn_LoadData)
     fun navigateToUserList() {
-        navigator?.navigateToUserList(this)
+        navigator.navigateToUserList(this)
     }
 }

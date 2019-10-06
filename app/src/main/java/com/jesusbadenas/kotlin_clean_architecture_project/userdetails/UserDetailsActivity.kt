@@ -20,8 +20,8 @@ class UserDetailsActivity : BaseActivity() {
     var userId: Int = 0
 
     companion object {
-        private val INTENT_EXTRA_PARAM_USER_ID = "org.android10.INTENT_PARAM_USER_ID"
-        private val INSTANCE_STATE_PARAM_USER_ID = "org.android10.STATE_PARAM_USER_ID"
+        private const val INTENT_EXTRA_PARAM_USER_ID = "org.android10.INTENT_PARAM_USER_ID"
+        private const val INSTANCE_STATE_PARAM_USER_ID = "org.android10.STATE_PARAM_USER_ID"
 
         fun getCallingIntent(context: Context, userId: Int): Intent {
             val callingIntent = Intent(context, UserDetailsActivity::class.java)

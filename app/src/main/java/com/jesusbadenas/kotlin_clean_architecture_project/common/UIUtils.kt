@@ -11,7 +11,7 @@ import com.jesusbadenas.kotlin_clean_architecture_project.di.modules.GlideApp
  */
 object UIUtils {
 
-    fun loadImageUrl(context: Context, view: ImageView, url: String) {
+    fun loadImageUrl(context: Context, view: ImageView, url: String?) {
         // Configure image
         GlideApp.with(context)
             .load(url)

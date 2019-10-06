@@ -8,6 +8,7 @@ import javax.inject.Inject
 class UserEntityMapper
 @Inject
 constructor() : Mapper<UserEntity, User>() {
+
     override fun mapFrom(from: UserEntity): User = User(
         from.userId,
         from.coverUrl,

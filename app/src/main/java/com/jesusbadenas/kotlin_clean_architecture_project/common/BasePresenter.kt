@@ -21,7 +21,7 @@ open class BasePresenter<T : MvpView> : Presenter<T> {
     }
 
     override fun detachView() {
-        mvpView = null
+        this.mvpView = null
     }
 
     fun checkViewAttached() {
@@ -37,34 +37,18 @@ open class BasePresenter<T : MvpView> : Presenter<T> {
         // Show log message
         Timber.e(throwable, logMessage)
         // Show dialog
-        val message: String?
-        if (errorMsgId == null) {
-            message = mvpView!!.context().getString(R.string.error_message_generic)
+        val message = if (errorMsgId == null) {
+            mvpView?.context()?.getString(R.string.error_message_generic)
         } else {
-            message = mvpView!!.context().getString(errorMsgId)
+            mvpView?.context()?.getString(errorMsgId)
         }
-        mvpView!!.showError(message, action)
+        mvpView?.showError(message, action)
     }
 
-    /**
-     * Shows an error message in the view
-     *
-     * @param throwable  the exception
-     * @param logMessage the message to show in the logs
-     * @param errorMsgId to customize the error message to show (optional)
-     */
     fun showErrorMessage(throwable: Throwable, logMessage: String, errorMsgId: Int?) {
         showError(throwable, logMessage, errorMsgId, null)
     }
 
-    /**
-     * Shows an error message in the view with an associated action
-     *
-     * @param throwable  the exception
-     * @param logMessage the message to show in the logs
-     * @param errorMsgId to customize the error message to show (optional)
-     * @param action     the action
-     */
     fun showErrorMessage(
         throwable: Throwable, logMessage: String, errorMsgId: Int?,
         action: DialogInterface.OnClickListener

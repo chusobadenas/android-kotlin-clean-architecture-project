@@ -11,7 +11,7 @@ import retrofit2.http.Path
 interface APIService {
 
     companion object {
-        const val USER_ID = "userId"
+        private const val USER_ID = "userId"
     }
 
     @GET("/android10/Sample-Data/master/Android-CleanArchitecture/users.json")

@@ -47,8 +47,8 @@ class UserListFragment : BaseMvpFragment(), UserListMvpView {
 
     private val onItemClickListener = object : UserAdapter.OnItemClickListener {
         override fun onUserItemClicked(user: User?) {
-            if (userListPresenter != null && user != null) {
-                userListPresenter?.onUserClicked(user)
+            if (user != null) {
+                userListPresenter.onUserClicked(user)
             }
         }
     }
@@ -70,7 +70,7 @@ class UserListFragment : BaseMvpFragment(), UserListMvpView {
     ): View {
         val fragmentView = inflater.inflate(R.layout.fragment_user_list, container, false)
         unbinder = ButterKnife.bind(this, fragmentView)
-        userListPresenter?.attachView(this)
+        userListPresenter.attachView(this)
         setupRecyclerView()
         return fragmentView
     }
@@ -88,7 +88,7 @@ class UserListFragment : BaseMvpFragment(), UserListMvpView {
 
     override fun onDestroy() {
         super.onDestroy()
-        userListPresenter?.detachView()
+        userListPresenter.detachView()
     }
 
     override fun showLoading() {
@@ -112,7 +112,7 @@ class UserListFragment : BaseMvpFragment(), UserListMvpView {
     }
 
     override fun renderUserList(userCollection: Collection<User>) {
-        usersAdapter?.setUsersCollection(userCollection)
+        usersAdapter.setUsersCollection(userCollection)
     }
 
     override fun viewUser(user: User) {
@@ -122,7 +122,7 @@ class UserListFragment : BaseMvpFragment(), UserListMvpView {
     }
 
     private fun setupRecyclerView() {
-        usersAdapter?.setOnItemClickListener(onItemClickListener)
+        usersAdapter.setOnItemClickListener(onItemClickListener)
         viewUsers.layoutManager = UsersLayoutManager(context())
         viewUsers.adapter = usersAdapter
 
@@ -133,7 +133,7 @@ class UserListFragment : BaseMvpFragment(), UserListMvpView {
     }
 
     private fun loadUserList() {
-        userListPresenter?.initialize()
+        userListPresenter.initialize()
     }
 
     @OnClick(R.id.bt_retry)

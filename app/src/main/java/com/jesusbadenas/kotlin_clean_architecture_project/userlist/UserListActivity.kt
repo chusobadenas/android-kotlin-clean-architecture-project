@@ -35,6 +35,6 @@ class UserListActivity : BaseActivity(), UserListFragment.UserListListener {
     }
 
     override fun onUserClicked(user: User) {
-        navigator?.navigateToUserDetails(this, user.userId)
+        navigator.navigateToUserDetails(this, user.userId)
     }
 }

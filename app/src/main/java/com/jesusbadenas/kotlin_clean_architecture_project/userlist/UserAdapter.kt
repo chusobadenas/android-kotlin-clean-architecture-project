@@ -28,13 +28,13 @@ constructor(@ApplicationContext context: Context) :
         fun onUserItemClicked(user: User?)
     }
 
-    private var usersCollection: List<User>? = emptyList()
+    private var usersCollection: List<User> = emptyList()
     private val layoutInflater: LayoutInflater =
         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private var onItemClickListener: OnItemClickListener? = null
 
     override fun getItemCount(): Int {
-        return usersCollection?.size ?: 0
+        return usersCollection.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -44,9 +44,9 @@ constructor(@ApplicationContext context: Context) :
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val context = holder.itemView.context
-        val user = usersCollection?.get(position)
-        UIUtils.loadImageUrl(context, holder.userImage, getImageUrl(user?.fullName))
-        holder.textViewTitle.text = user?.fullName
+        val user = usersCollection.get(position)
+        UIUtils.loadImageUrl(context, holder.userImage, getImageUrl(user.fullName))
+        holder.textViewTitle.text = user.fullName
         holder.itemView.setOnClickListener {
             onItemClickListener?.onUserItemClicked(user)
         }

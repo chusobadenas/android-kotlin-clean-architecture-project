@@ -17,7 +17,7 @@ object DialogFactory {
     }
 
     private fun createConfirmDialog(
-        context: Context, title: String, message: String,
+        context: Context, title: String, message: String?,
         buttonTextId: Int, action: DialogInterface.OnClickListener?
     ): AlertDialog {
         // Create dialog
@@ -42,7 +42,7 @@ object DialogFactory {
     }
 
     private fun createSimpleDialog(
-        context: Context, title: String, message: String,
+        context: Context, title: String, message: String?,
         action: DialogInterface.OnClickListener?
     ): AlertDialog {
         // Create dialog
@@ -82,28 +82,20 @@ object DialogFactory {
 
     fun showDialog(
         context: Context, type: DialogType, title: String,
-        message: String, buttonTextId: Int, action: DialogInterface.OnClickListener?
+        message: String?, buttonTextId: Int, action: DialogInterface.OnClickListener?
     ): AlertDialog? {
         // Create dialog
-        var dialog: AlertDialog? = null
-        when (type) {
-            DialogFactory.DialogType.CONFIRM -> dialog =
-                DialogFactory.createConfirmDialog(context, title, message, buttonTextId, action)
-            DialogFactory.DialogType.PROGRESS -> dialog =
-                DialogFactory.createProgressDialog(context)
-            DialogFactory.DialogType.SIMPLE -> dialog =
-                DialogFactory.createSimpleDialog(context, title, message, action)
-            else -> {
-            }
+        val dialog = when (type) {
+            DialogType.CONFIRM -> createConfirmDialog(context, title, message, buttonTextId, action)
+            DialogType.PROGRESS -> createProgressDialog(context)
+            DialogType.SIMPLE -> createSimpleDialog(context, title, message, action)
         }
 
-        if (dialog != null) {
-            // Show dialog
-            dialog.show()
-            // Change buttons color
-            setButtonColor(context, dialog, DialogInterface.BUTTON_NEUTRAL)
-            setButtonColor(context, dialog, DialogInterface.BUTTON_POSITIVE)
-        }
+        // Show dialog
+        dialog.show()
+        // Change buttons color
+        setButtonColor(context, dialog, DialogInterface.BUTTON_NEUTRAL)
+        setButtonColor(context, dialog, DialogInterface.BUTTON_POSITIVE)
 
         return dialog
     }

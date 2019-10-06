@@ -83,7 +83,7 @@ class UserDetailsFragment : BaseMvpFragment(), UserDetailsMvpView {
     }
 
     override fun renderUser(user: User) {
-        UIUtils.loadImageUrl(context(), imageViewCover, user.coverUrl!!)
+        UIUtils.loadImageUrl(context(), imageViewCover, user.coverUrl)
         textViewFullName.text = user.fullName
         textViewEmail.text = user.email
         textViewFollowers.text = user.followers.toString()
