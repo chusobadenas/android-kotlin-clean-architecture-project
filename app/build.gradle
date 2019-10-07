@@ -11,8 +11,8 @@ android {
         applicationId "com.jesusbadenas.kotlin_clean_architecture_project"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
         testInstrumentationRunner rootProject.ext.testInstrumentationRunner
     }
 

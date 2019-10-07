@@ -25,16 +25,16 @@ constructor(@ApplicationContext context: Context) :
     RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
     interface OnItemClickListener {
-        fun onUserItemClicked(user: User?)
+        fun onUserItemClicked(user: User)
     }
 
-    private var usersCollection: List<User> = emptyList()
+    private var users: List<User> = emptyList()
     private val layoutInflater: LayoutInflater =
         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private var onItemClickListener: OnItemClickListener? = null
 
     override fun getItemCount(): Int {
-        return usersCollection.size
+        return users.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -44,7 +44,7 @@ constructor(@ApplicationContext context: Context) :
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val context = holder.itemView.context
-        val user = usersCollection.get(position)
+        val user = users[position]
         UIUtils.loadImageUrl(context, holder.userImage, getImageUrl(user.fullName))
         holder.textViewTitle.text = user.fullName
         holder.itemView.setOnClickListener {
@@ -76,18 +76,13 @@ constructor(@ApplicationContext context: Context) :
         return position.toLong()
     }
 
-    fun setUsersCollection(usersCollection: Collection<User>) {
-        validateUsersCollection(usersCollection)
-        this.usersCollection = usersCollection as List<User>
+    fun setUsers(users: List<User>) {
+        this.users = users
         notifyDataSetChanged()
     }
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
         this.onItemClickListener = onItemClickListener
-    }
-
-    private fun validateUsersCollection(usersCollection: Collection<User>?) {
-        requireNotNull(usersCollection) { "The list cannot be null" }
     }
 
     class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

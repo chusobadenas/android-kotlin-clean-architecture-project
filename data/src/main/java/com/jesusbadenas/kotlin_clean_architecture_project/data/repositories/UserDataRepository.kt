@@ -21,11 +21,15 @@ constructor(
 
     override fun users(): Observable<List<UserEntity>> {
         return apiService.userDataList()
-            .map { userEntities -> userDataMapper.transform(userEntities) }
+            .map { userEntities ->
+                userDataMapper.transform(userEntities)
+            }
     }
 
     override fun user(userId: Int): Observable<UserEntity> {
         return apiService.userDataById(userId)
-            .map { userEntity -> userDataMapper.transform(userEntity) }
+            .map { userEntity ->
+                userDataMapper.transform(userEntity)
+            }
     }
 }

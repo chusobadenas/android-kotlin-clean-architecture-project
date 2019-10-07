@@ -17,15 +17,15 @@ class UserDetailsActivity : BaseActivity() {
     @BindView(R.id.toolbar)
     lateinit var toolbar: Toolbar
 
-    var userId: Int = 0
+    var userId: Int = -1
 
     companion object {
-        private const val INTENT_EXTRA_PARAM_USER_ID = "org.android10.INTENT_PARAM_USER_ID"
-        private const val INSTANCE_STATE_PARAM_USER_ID = "org.android10.STATE_PARAM_USER_ID"
+        private const val INTENT_PARAM_USER_ID = "INTENT_PARAM_USER_ID"
+        private const val STATE_PARAM_USER_ID = "STATE_PARAM_USER_ID"
 
         fun getCallingIntent(context: Context, userId: Int): Intent {
             val callingIntent = Intent(context, UserDetailsActivity::class.java)
-            callingIntent.putExtra(INTENT_EXTRA_PARAM_USER_ID, userId)
+            callingIntent.putExtra(INTENT_PARAM_USER_ID, userId)
             return callingIntent
         }
     }
@@ -39,7 +39,7 @@ class UserDetailsActivity : BaseActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(INSTANCE_STATE_PARAM_USER_ID, this.userId)
+        outState.putInt(STATE_PARAM_USER_ID, this.userId)
         super.onSaveInstanceState(outState)
     }
 
@@ -49,11 +49,11 @@ class UserDetailsActivity : BaseActivity() {
     }
 
     private fun initializeActivity(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null) {
-            userId = intent.getIntExtra(INTENT_EXTRA_PARAM_USER_ID, -1)
+        savedInstanceState?.let {
+            userId = it.getInt(STATE_PARAM_USER_ID)
+        } ?: run {
+            userId = intent.getIntExtra(INTENT_PARAM_USER_ID, -1)
             addFragment(R.id.fragmentContainer, UserDetailsFragment.newInstance())
-        } else {
-            userId = savedInstanceState.getInt(INSTANCE_STATE_PARAM_USER_ID)
         }
     }
 }

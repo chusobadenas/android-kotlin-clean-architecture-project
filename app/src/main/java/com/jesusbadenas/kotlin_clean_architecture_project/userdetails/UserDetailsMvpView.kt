@@ -9,5 +9,5 @@ import com.jesusbadenas.kotlin_clean_architecture_project.entities.User
  */
 interface UserDetailsMvpView : MvpView {
 
-    fun renderUser(user: User)
+    fun showUserDetails(user: User)
 }

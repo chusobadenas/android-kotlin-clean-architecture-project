@@ -82,7 +82,7 @@ class UserDetailsFragment : BaseMvpFragment(), UserDetailsMvpView {
         userDetailsPresenter.detachView()
     }
 
-    override fun renderUser(user: User) {
+    override fun showUserDetails(user: User) {
         UIUtils.loadImageUrl(context(), imageViewCover, user.coverUrl)
         textViewFullName.text = user.fullName
         textViewEmail.text = user.email

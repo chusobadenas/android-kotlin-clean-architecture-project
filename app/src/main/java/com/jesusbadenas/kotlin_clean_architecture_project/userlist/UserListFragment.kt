@@ -46,10 +46,8 @@ class UserListFragment : BaseMvpFragment(), UserListMvpView {
     }
 
     private val onItemClickListener = object : UserAdapter.OnItemClickListener {
-        override fun onUserItemClicked(user: User?) {
-            if (user != null) {
-                userListPresenter.onUserClicked(user)
-            }
+        override fun onUserItemClicked(user: User) {
+            userListPresenter.onUserClicked(user)
         }
     }
 
@@ -111,14 +109,12 @@ class UserListFragment : BaseMvpFragment(), UserListMvpView {
         viewRetry.visibility = View.GONE
     }
 
-    override fun renderUserList(userCollection: Collection<User>) {
-        usersAdapter.setUsersCollection(userCollection)
+    override fun showUserList(users: List<User>) {
+        usersAdapter.setUsers(users)
     }
 
     override fun viewUser(user: User) {
-        if (userListListener != null) {
-            userListListener?.onUserClicked(user)
-        }
+        userListListener?.onUserClicked(user)
     }
 
     private fun setupRecyclerView() {

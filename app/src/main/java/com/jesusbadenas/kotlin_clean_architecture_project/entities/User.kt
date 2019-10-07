@@ -9,5 +9,5 @@ data class User(
     var fullName: String? = null,
     var email: String? = null,
     var description: String? = null,
-    var followers: Int = 0
+    var followers: Int? = 0
 )

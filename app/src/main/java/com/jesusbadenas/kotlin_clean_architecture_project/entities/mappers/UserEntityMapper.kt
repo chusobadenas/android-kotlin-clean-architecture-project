@@ -8,8 +8,7 @@ import javax.inject.Inject
 class UserEntityMapper
 @Inject
 constructor() : Mapper<UserEntity, User>() {
-
-    override fun mapFrom(from: UserEntity): User = User(
+    override fun mapFrom(from: UserEntity) = User(
         from.userId,
         from.coverUrl,
         from.fullName,
@@ -19,14 +18,14 @@ constructor() : Mapper<UserEntity, User>() {
     )
 
     override fun mapFrom(from: List<UserEntity>): List<User> {
-        val userCollection: ArrayList<User> = ArrayList()
+        val userList: ArrayList<User> = ArrayList()
 
         if (from.isNotEmpty()) {
             for (userEntity in from) {
-                userCollection.add(mapFrom(userEntity))
+                userList.add(mapFrom(userEntity))
             }
         }
 
-        return userCollection
+        return userList
     }
 }

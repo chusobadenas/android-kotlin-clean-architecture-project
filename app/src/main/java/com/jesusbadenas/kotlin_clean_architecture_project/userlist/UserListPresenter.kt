@@ -41,9 +41,9 @@ constructor(
         mvpView?.viewUser(user)
     }
 
-    private fun showUsersCollectionInView(userEntityCollection: List<UserEntity>) {
-        val userCollection = userEntityMapper.mapFrom(userEntityCollection)
-        mvpView?.renderUserList(userCollection)
+    private fun showUsersCollectionInView(userEntities: List<UserEntity>) {
+        val userList = userEntityMapper.mapFrom(userEntities)
+        mvpView?.showUserList(userList)
     }
 
     private fun getUserList() {

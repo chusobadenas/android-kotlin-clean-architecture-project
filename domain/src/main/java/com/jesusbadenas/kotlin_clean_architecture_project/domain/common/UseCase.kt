@@ -19,8 +19,10 @@ abstract class UseCase<T> {
     }
 
     fun unsubscribe() {
-        if (this.observer != null && !this.observer!!.isDisposed) {
-            observer?.dispose()
+        this.observer?.let {
+            if (!it.isDisposed) {
+                it.dispose()
+            }
         }
     }
 }

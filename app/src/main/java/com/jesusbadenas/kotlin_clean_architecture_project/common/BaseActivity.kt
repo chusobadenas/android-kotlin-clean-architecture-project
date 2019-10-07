@@ -3,7 +3,6 @@ package com.jesusbadenas.kotlin_clean_architecture_project.common
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.jesusbadenas.kotlin_clean_architecture_project.di.modules.ActivityModule
 import com.jesusbadenas.kotlin_clean_architecture_project.navigation.Navigator
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
@@ -16,9 +15,6 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var navigator: Navigator
 
-    val activityModule: ActivityModule
-        get() = ActivityModule(this)
-
     fun addFragment(containerViewId: Int, fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .add(containerViewId, fragment)
@@ -26,8 +22,8 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
     }
 
     fun replaceFragment(containerViewId: Int, fragment: Fragment, addToBackStack: Boolean) {
-        var transaction = supportFragmentManager.beginTransaction()
-            .replace(containerViewId, fragment)
+        var transaction =
+            supportFragmentManager.beginTransaction().replace(containerViewId, fragment)
         if (addToBackStack) {
             transaction = transaction.addToBackStack(null)
         }

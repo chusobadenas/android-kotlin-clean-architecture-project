@@ -11,5 +11,5 @@ data class UserData(
     @SerializedName("full_name") var fullName: String? = null,
     @SerializedName("email") var email: String? = null,
     @SerializedName("description") var description: String? = null,
-    @SerializedName("followers") var followers: Int = 0
+    @SerializedName("followers") var followers: Int? = 0
 )
