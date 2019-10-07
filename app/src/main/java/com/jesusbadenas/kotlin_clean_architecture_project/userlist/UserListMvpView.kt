@@ -9,7 +9,7 @@ import com.jesusbadenas.kotlin_clean_architecture_project.entities.User
  */
 interface UserListMvpView : MvpView {
 
-    fun renderUserList(userCollection: Collection<User>)
+    fun showUserList(users: List<User>)
 
     fun viewUser(user: User)
 }

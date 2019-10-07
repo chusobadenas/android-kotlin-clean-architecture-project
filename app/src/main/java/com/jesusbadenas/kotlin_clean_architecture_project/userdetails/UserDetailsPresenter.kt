@@ -38,7 +38,7 @@ constructor(
 
     private fun showUserDetailsInView(userEntity: UserEntity) {
         val user = userEntityMapper.mapFrom(userEntity)
-        mvpView?.renderUser(user)
+        mvpView?.showUserDetails(user)
     }
 
     private fun getUserDetails(userId: Int) {
