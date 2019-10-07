@@ -1,8 +1,7 @@
-package com.jesusbadenas.kotlin_clean_architecture_project.common
+package com.jesusbadenas.kotlin_clean_architecture_project.data.api
 
 import com.google.gson.GsonBuilder
 import com.jesusbadenas.kotlin_clean_architecture_project.data.BuildConfig
-import com.jesusbadenas.kotlin_clean_architecture_project.data.api.APIService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
