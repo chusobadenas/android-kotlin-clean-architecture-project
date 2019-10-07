@@ -14,28 +14,22 @@ import javax.inject.Singleton
 class UserDataMapper
 @Inject
 constructor() {
-    fun transform(userData: UserData?): UserEntity? {
-        var userEntity: UserEntity? = null
-        if (userData != null) {
-            userEntity = UserEntity(
-                userData.userId,
-                userData.coverUrl,
-                userData.fullName,
-                userData.email,
-                userData.description,
-                userData.followers
-            )
-        }
-        return userEntity
+    fun transform(userData: UserData): UserEntity {
+        return UserEntity(
+            userData.userId,
+            userData.coverUrl,
+            userData.fullName,
+            userData.email,
+            userData.description,
+            userData.followers
+        )
     }
 
-    fun transform(userDataCollection: Collection<UserData>): List<UserEntity> {
+    fun transform(userDataList: List<UserData>): List<UserEntity> {
         val userList = ArrayList<UserEntity>()
-        for (userData in userDataCollection) {
+        for (userData in userDataList) {
             val user = transform(userData)
-            if (user != null) {
-                userList.add(user)
-            }
+            userList.add(user)
         }
         return userList
     }

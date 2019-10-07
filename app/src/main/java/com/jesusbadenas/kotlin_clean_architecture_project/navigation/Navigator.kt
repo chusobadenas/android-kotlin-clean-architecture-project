@@ -13,18 +13,13 @@ import javax.inject.Singleton
 class Navigator
 @Inject
 constructor() {
-
-    fun navigateToUserList(context: Context?) {
-        if (context != null) {
-            val intentToLaunch = UserListActivity.getCallingIntent(context)
-            context.startActivity(intentToLaunch)
-        }
+    fun navigateToUserList(context: Context) {
+        val intentToLaunch = UserListActivity.getCallingIntent(context)
+        context.startActivity(intentToLaunch)
     }
 
-    fun navigateToUserDetails(context: Context?, userId: Int) {
-        if (context != null) {
-            val intentToLaunch = UserDetailsActivity.getCallingIntent(context, userId)
-            context.startActivity(intentToLaunch)
-        }
+    fun navigateToUserDetails(context: Context, userId: Int) {
+        val intentToLaunch = UserDetailsActivity.getCallingIntent(context, userId)
+        context.startActivity(intentToLaunch)
     }
 }
