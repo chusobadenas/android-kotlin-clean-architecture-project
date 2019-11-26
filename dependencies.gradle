@@ -12,6 +12,7 @@ ext {
     androidXVersion = '1.1.0'
     butterknifeVersion = '10.2.0'
     daggerVersion = '2.24'
+    dataBindingVersion = '3.1.4'
     glideVersion = '4.10.0'
     jsr250Version = '1.0'
     lifecycleVersion = '2.0.0'
@@ -32,6 +33,7 @@ ext {
     daggerAndroid = "com.google.dagger:dagger-android:$daggerVersion"
     daggerAndroidProcessor = "com.google.dagger:dagger-android-processor:$daggerVersion"
     daggerAndroidSupport = "com.google.dagger:dagger-android-support:$daggerVersion"
+    dataBindingCompiler = "com.android.databinding:compiler:$dataBindingVersion"
     glide = "com.github.bumptech.glide:glide:$glideVersion"
     glideCompiler = "com.github.bumptech.glide:compiler:$glideVersion"
     jsr250 = "javax.annotation:jsr250-api:$jsr250Version"

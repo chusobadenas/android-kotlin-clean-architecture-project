@@ -28,6 +28,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    dataBinding {
+        enabled = true
+    }
+
     lintOptions {
         warning 'InvalidPackage'
     }
@@ -64,6 +68,7 @@ dependencies {
     kapt rootProject.ext.butterknifeCompiler
     kapt rootProject.ext.daggerCompiler
     kapt rootProject.ext.daggerAndroidProcessor
+    kapt rootProject.ext.dataBindingCompiler
     kapt rootProject.ext.glideCompiler
     kapt rootProject.ext.lifeCycleCompiler
 
