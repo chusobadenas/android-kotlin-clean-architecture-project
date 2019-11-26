@@ -51,6 +51,7 @@ dependencies {
     implementation rootProject.ext.dagger
     implementation rootProject.ext.daggerAndroid
     implementation rootProject.ext.daggerAndroidSupport
+    implementation rootProject.ext.lifeCycleExtensions
     implementation rootProject.ext.loggingInterceptor
     implementation rootProject.ext.retrofit
     implementation rootProject.ext.retrofitConverterGson
@@ -64,6 +65,7 @@ dependencies {
     kapt rootProject.ext.daggerCompiler
     kapt rootProject.ext.daggerAndroidProcessor
     kapt rootProject.ext.glideCompiler
+    kapt rootProject.ext.lifeCycleCompiler
 
     compileOnly rootProject.ext.jsr250
 
