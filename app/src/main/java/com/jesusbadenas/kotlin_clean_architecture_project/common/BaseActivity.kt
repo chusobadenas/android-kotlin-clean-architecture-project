@@ -3,8 +3,10 @@ package com.jesusbadenas.kotlin_clean_architecture_project.common
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.jesusbadenas.kotlin_clean_architecture_project.R
 import com.jesusbadenas.kotlin_clean_architecture_project.navigation.Navigator
 import dagger.android.support.DaggerAppCompatActivity
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -50,5 +52,26 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    fun showError(uiError: UIError) {
+        // Show log message
+        Timber.e(uiError.throwable, uiError.logMessage)
+
+        // Show dialog
+        val message = uiError.errorMsgId?.let {
+            getString(it)
+        } ?: getString(R.string.error_message_generic)
+
+        val title = getString(R.string.error_title_generic)
+
+        DialogFactory.showDialog(
+            this,
+            DialogFactory.DialogType.SIMPLE,
+            title,
+            message,
+            android.R.string.ok,
+            uiError.action
+        )
     }
 }

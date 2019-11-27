@@ -52,7 +52,7 @@ constructor(
 
         override fun onError(throwable: Throwable) {
             showLoading(false)
-            // TODO: showErrorMessage(throwable, "Error loading user list", null)
+            showError(throwable, "Error loading user list", null, null)
             showRetry(true)
         }
 
