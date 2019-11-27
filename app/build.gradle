@@ -75,6 +75,7 @@ dependencies {
     compileOnly rootProject.ext.jsr250
 
     testImplementation rootProject.ext.androidXTestCore
+    testImplementation rootProject.ext.archCore
     testImplementation rootProject.ext.jUnit
     testImplementation rootProject.ext.mockk
     testImplementation rootProject.ext.robolectric

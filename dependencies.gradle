@@ -50,11 +50,13 @@ ext {
 
     // Testing
     androidXTestVersion = '1.2.0'
+    archCoreVersion = '1.1.1'
     junitVersion = '4.12'
     mockkVersion = '1.9.3'
     robolectricVersion = '4.3'
 
     androidXTestCore = "androidx.test:core:$androidXTestVersion"
+    archCore = "android.arch.core:core-testing:$archCoreVersion"
     jUnit = "junit:junit:$junitVersion"
     mockk = "io.mockk:mockk:$mockkVersion"
     robolectric = "org.robolectric:robolectric:$robolectricVersion"
