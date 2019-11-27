@@ -17,7 +17,7 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import butterknife.Unbinder
 import com.jesusbadenas.kotlin_clean_architecture_project.R
-import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseMvpFragment
+import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseFragment
 import com.jesusbadenas.kotlin_clean_architecture_project.common.UIError
 import com.jesusbadenas.kotlin_clean_architecture_project.common.UIUtils
 import com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.UserDetailsViewModel
@@ -26,7 +26,7 @@ import javax.inject.Inject
 /**
  * Fragment that shows details of a certain User.
  */
-class UserDetailsFragment : BaseMvpFragment() {
+class UserDetailsFragment : BaseFragment() {
 
     private lateinit var userDetailsVM: UserDetailsViewModel
 

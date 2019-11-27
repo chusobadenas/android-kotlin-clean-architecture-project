@@ -41,18 +41,22 @@ abstract class BaseFragment : DaggerFragment() {
 
         // Show dialog
         val message = uiError.errorMsgId?.let {
-            activity?.getString(it)
-        } ?: activity?.getString(R.string.error_message_generic)
+            context().getString(it)
+        } ?: context().getString(R.string.error_message_generic)
 
-        val title = activity?.getString(R.string.error_title_generic)
+        val title = context().getString(R.string.error_title_generic)
 
         DialogFactory.showDialog(
-            activity!!,
+            context(),
             DialogFactory.DialogType.SIMPLE,
             title,
             message,
             android.R.string.ok,
             uiError.action
         )
+    }
+
+    fun context(): Context {
+        return activity!!
     }
 }

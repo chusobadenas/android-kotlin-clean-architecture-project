@@ -16,7 +16,7 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import butterknife.Unbinder
 import com.jesusbadenas.kotlin_clean_architecture_project.R
-import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseMvpFragment
+import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseFragment
 import com.jesusbadenas.kotlin_clean_architecture_project.common.UIError
 import com.jesusbadenas.kotlin_clean_architecture_project.entities.User
 import com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.UserListViewModel
@@ -25,7 +25,7 @@ import javax.inject.Inject
 /**
  * Fragment that shows a list of Users.
  */
-class UserListFragment : BaseMvpFragment() {
+class UserListFragment : BaseFragment() {
 
     private lateinit var userListVM: UserListViewModel
 
