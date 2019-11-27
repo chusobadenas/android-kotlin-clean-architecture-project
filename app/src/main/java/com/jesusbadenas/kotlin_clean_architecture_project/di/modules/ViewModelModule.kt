@@ -10,6 +10,7 @@ import com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.ViewModelFac
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
+import javax.inject.Provider
 import javax.inject.Singleton
 
 @Module
@@ -26,8 +27,9 @@ class ViewModelModule {
 
     @Provides
     @Singleton
-    fun provideViewModelFactory(map: Map<Class<out ViewModel>, @JvmSuppressWildcards ViewModel>):
-            ViewModelProvider.Factory {
+    fun provideViewModelFactory(
+        map: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
+    ): ViewModelProvider.Factory {
         return ViewModelFactory(map)
     }
 }
