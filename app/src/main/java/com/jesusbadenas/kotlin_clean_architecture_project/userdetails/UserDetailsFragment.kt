@@ -18,7 +18,6 @@ import butterknife.OnClick
 import butterknife.Unbinder
 import com.jesusbadenas.kotlin_clean_architecture_project.R
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseFragment
-import com.jesusbadenas.kotlin_clean_architecture_project.common.UIError
 import com.jesusbadenas.kotlin_clean_architecture_project.common.UIUtils
 import com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.UserDetailsViewModel
 import javax.inject.Inject
@@ -106,9 +105,8 @@ class UserDetailsFragment : BaseFragment() {
         })
 
         // Error
-        userDetailsVM.hasError().observe(this, Observer { event ->
-            val uiError: UIError = event.peekContent()
-            UIUtils.showError(context(), uiError)
+        userDetailsVM.hasError().observe(this, Observer { resource ->
+            UIUtils.showError(context(), resource.data)
         })
 
         // User details

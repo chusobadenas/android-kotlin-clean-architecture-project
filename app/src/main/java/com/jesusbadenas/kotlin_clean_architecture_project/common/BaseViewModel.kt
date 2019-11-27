@@ -9,7 +9,7 @@ abstract class BaseViewModel : ViewModel() {
 
     private val isLoading: MutableLiveData<Boolean> = MutableLiveData()
     private val isRetry: MutableLiveData<Boolean> = MutableLiveData()
-    private val hasError: MutableLiveData<Event<UIError>> = MutableLiveData()
+    private val hasError: MutableLiveData<Resource<UIError>> = MutableLiveData()
 
     fun isLoading(): LiveData<Boolean> {
         return isLoading
@@ -19,7 +19,7 @@ abstract class BaseViewModel : ViewModel() {
         return isRetry
     }
 
-    fun hasError(): LiveData<Event<UIError>> {
+    fun hasError(): LiveData<Resource<UIError>> {
         return hasError
     }
 
@@ -37,6 +37,6 @@ abstract class BaseViewModel : ViewModel() {
         errorMsgId: Int?,
         action: DialogInterface.OnClickListener?
     ) {
-        hasError.value = Event(UIError(throwable, logMessage, errorMsgId, action))
+        hasError.value = Resource.Error(UIError(throwable, logMessage, errorMsgId, action))
     }
 }

@@ -3,7 +3,7 @@ package com.jesusbadenas.kotlin_clean_architecture_project.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseViewModel
-import com.jesusbadenas.kotlin_clean_architecture_project.common.Event
+import com.jesusbadenas.kotlin_clean_architecture_project.common.Resource
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.common.DefaultSubscriber
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.common.UseCase
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.entities.UserEntity
@@ -19,13 +19,13 @@ constructor(
 ) : BaseViewModel() {
 
     private val userList: MutableLiveData<List<User>> = MutableLiveData()
-    private val userClicked: MutableLiveData<Event<User>> = MutableLiveData()
+    private val userClicked: MutableLiveData<Resource<User>> = MutableLiveData()
 
     fun getUserList(): LiveData<List<User>> {
         return userList
     }
 
-    fun getUserClicked(): LiveData<Event<User>> {
+    fun getUserClicked(): LiveData<Resource<User>> {
         return userClicked
     }
 
@@ -45,7 +45,7 @@ constructor(
     }
 
     fun onUserClicked(user: User) {
-        userClicked.value = Event(user)
+        userClicked.value = Resource.Success(user)
     }
 
     private inner class UserListSubscriber : DefaultSubscriber<List<UserEntity>>() {

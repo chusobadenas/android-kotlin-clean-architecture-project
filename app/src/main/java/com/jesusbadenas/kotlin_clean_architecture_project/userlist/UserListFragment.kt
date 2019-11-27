@@ -17,7 +17,6 @@ import butterknife.OnClick
 import butterknife.Unbinder
 import com.jesusbadenas.kotlin_clean_architecture_project.R
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseFragment
-import com.jesusbadenas.kotlin_clean_architecture_project.common.UIError
 import com.jesusbadenas.kotlin_clean_architecture_project.common.UIUtils
 import com.jesusbadenas.kotlin_clean_architecture_project.entities.User
 import com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.UserListViewModel
@@ -127,9 +126,8 @@ class UserListFragment : BaseFragment() {
         })
 
         // Error
-        userListVM.hasError().observe(this, Observer { event ->
-            val uiError: UIError = event.peekContent()
-            UIUtils.showError(context(), uiError)
+        userListVM.hasError().observe(this, Observer { resource ->
+            UIUtils.showError(context(), resource.data)
         })
 
         // User list
@@ -138,9 +136,8 @@ class UserListFragment : BaseFragment() {
         })
 
         // User clicked
-        userListVM.getUserClicked().observe(this, Observer { event ->
-            val user: User = event.peekContent()
-            userListListener?.onUserClicked(user)
+        userListVM.getUserClicked().observe(this, Observer { resource ->
+            userListListener?.onUserClicked(resource.data)
         })
     }
 
