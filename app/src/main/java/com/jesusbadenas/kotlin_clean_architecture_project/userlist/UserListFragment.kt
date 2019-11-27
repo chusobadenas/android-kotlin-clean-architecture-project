@@ -18,6 +18,7 @@ import butterknife.Unbinder
 import com.jesusbadenas.kotlin_clean_architecture_project.R
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseFragment
 import com.jesusbadenas.kotlin_clean_architecture_project.common.UIError
+import com.jesusbadenas.kotlin_clean_architecture_project.common.UIUtils
 import com.jesusbadenas.kotlin_clean_architecture_project.entities.User
 import com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.UserListViewModel
 import javax.inject.Inject
@@ -128,7 +129,7 @@ class UserListFragment : BaseFragment() {
         // Error
         userListVM.hasError().observe(this, Observer { event ->
             val uiError: UIError = event.peekContent()
-            showError(uiError)
+            UIUtils.showError(context(), uiError)
         })
 
         // User list

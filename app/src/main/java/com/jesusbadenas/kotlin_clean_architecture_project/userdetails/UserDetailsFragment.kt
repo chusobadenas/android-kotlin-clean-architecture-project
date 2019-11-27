@@ -108,7 +108,7 @@ class UserDetailsFragment : BaseFragment() {
         // Error
         userDetailsVM.hasError().observe(this, Observer { event ->
             val uiError: UIError = event.peekContent()
-            showError(uiError)
+            UIUtils.showError(context(), uiError)
         })
 
         // User details

@@ -6,9 +6,7 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.jesusbadenas.kotlin_clean_architecture_project.R
 import dagger.android.support.DaggerFragment
-import timber.log.Timber
 
 /**
  * Base [Fragment] class for every fragment in this application.
@@ -34,27 +32,6 @@ abstract class BaseFragment : DaggerFragment() {
     }
 
     abstract fun onAttachToContext(context: Context)
-
-    fun showError(uiError: UIError) {
-        // Show log message
-        Timber.e(uiError.throwable, uiError.logMessage)
-
-        // Show dialog
-        val message = uiError.errorMsgId?.let {
-            context().getString(it)
-        } ?: context().getString(R.string.error_message_generic)
-
-        val title = context().getString(R.string.error_title_generic)
-
-        DialogFactory.showDialog(
-            context(),
-            DialogFactory.DialogType.SIMPLE,
-            title,
-            message,
-            android.R.string.ok,
-            uiError.action
-        )
-    }
 
     fun context(): Context {
         return activity!!
