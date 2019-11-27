@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import butterknife.BindView
@@ -14,16 +17,20 @@ import butterknife.OnClick
 import butterknife.Unbinder
 import com.jesusbadenas.kotlin_clean_architecture_project.R
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseMvpFragment
+import com.jesusbadenas.kotlin_clean_architecture_project.common.UIError
 import com.jesusbadenas.kotlin_clean_architecture_project.entities.User
+import com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.UserListViewModel
 import javax.inject.Inject
 
 /**
  * Fragment that shows a list of Users.
  */
-class UserListFragment : BaseMvpFragment(), UserListMvpView {
+class UserListFragment : BaseMvpFragment() {
+
+    private lateinit var userListVM: UserListViewModel
 
     @Inject
-    lateinit var userListPresenter: UserListPresenter
+    lateinit var vmFactory: ViewModelProvider.Factory
     @Inject
     lateinit var usersAdapter: UserAdapter
 
@@ -47,7 +54,7 @@ class UserListFragment : BaseMvpFragment(), UserListMvpView {
 
     private val onItemClickListener = object : UserAdapter.OnItemClickListener {
         override fun onUserItemClicked(user: User) {
-            userListPresenter.onUserClicked(user)
+            userListVM.onUserClicked(user)
         }
     }
 
@@ -68,7 +75,8 @@ class UserListFragment : BaseMvpFragment(), UserListMvpView {
     ): View {
         val fragmentView = inflater.inflate(R.layout.fragment_user_list, container, false)
         unbinder = ButterKnife.bind(this, fragmentView)
-        userListPresenter.attachView(this)
+        userListVM = ViewModelProviders.of(this, vmFactory).get(UserListViewModel::class.java)
+        subscribe()
         setupRecyclerView()
         return fragmentView
     }
@@ -84,39 +92,6 @@ class UserListFragment : BaseMvpFragment(), UserListMvpView {
         unbinder?.unbind()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        userListPresenter.detachView()
-    }
-
-    override fun showLoading() {
-        swipeRefresh.visibility = View.GONE
-        swipeRefresh.isRefreshing = true
-        viewProgress.visibility = View.VISIBLE
-    }
-
-    override fun hideLoading() {
-        swipeRefresh.visibility = View.VISIBLE
-        swipeRefresh.isRefreshing = false
-        viewProgress.visibility = View.GONE
-    }
-
-    override fun showRetry() {
-        viewRetry.visibility = View.VISIBLE
-    }
-
-    override fun hideRetry() {
-        viewRetry.visibility = View.GONE
-    }
-
-    override fun showUserList(users: List<User>) {
-        usersAdapter.setUsers(users)
-    }
-
-    override fun viewUser(user: User) {
-        userListListener?.onUserClicked(user)
-    }
-
     private fun setupRecyclerView() {
         usersAdapter.setOnItemClickListener(onItemClickListener)
         viewUsers.layoutManager = UsersLayoutManager(context())
@@ -128,8 +103,48 @@ class UserListFragment : BaseMvpFragment(), UserListMvpView {
         }
     }
 
+    private fun subscribe() {
+        // Loading
+        userListVM.isLoading().observe(this, Observer { loading ->
+            swipeRefresh.isRefreshing = loading
+            if (loading) {
+                swipeRefresh.visibility = View.GONE
+                viewProgress.visibility = View.VISIBLE
+            } else {
+                swipeRefresh.visibility = View.VISIBLE
+                viewProgress.visibility = View.GONE
+            }
+        })
+
+        // Retry
+        userListVM.isRetry().observe(this, Observer { retry ->
+            if (retry) {
+                viewRetry.visibility = View.VISIBLE
+            } else {
+                viewRetry.visibility = View.GONE
+            }
+        })
+
+        // Error
+        userListVM.hasError().observe(this, Observer { event ->
+            val uiError: UIError = event.peekContent()
+            showError(uiError)
+        })
+
+        // User list
+        userListVM.getUserList().observe(this, Observer { users ->
+            usersAdapter.setUsers(users)
+        })
+
+        // User clicked
+        userListVM.getUserClicked().observe(this, Observer { event ->
+            val user: User = event.peekContent()
+            userListListener?.onUserClicked(user)
+        })
+    }
+
     private fun loadUserList() {
-        userListPresenter.initialize()
+        userListVM.loadUserList()
     }
 
     @OnClick(R.id.bt_retry)
