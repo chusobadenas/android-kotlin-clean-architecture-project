@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -19,6 +19,7 @@ import butterknife.Unbinder
 import com.jesusbadenas.kotlin_clean_architecture_project.R
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseFragment
 import com.jesusbadenas.kotlin_clean_architecture_project.common.UIUtils
+import com.jesusbadenas.kotlin_clean_architecture_project.databinding.FragmentUserDetailsBinding
 import com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.UserDetailsViewModel
 import javax.inject.Inject
 
@@ -27,21 +28,11 @@ import javax.inject.Inject
  */
 class UserDetailsFragment : BaseFragment() {
 
-    private lateinit var userDetailsVM: UserDetailsViewModel
-
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
 
     @BindView(R.id.iv_cover)
     lateinit var imageViewCover: ImageView
-    @BindView(R.id.tv_fullname)
-    lateinit var textViewFullName: TextView
-    @BindView(R.id.tv_email)
-    lateinit var textViewEmail: TextView
-    @BindView(R.id.tv_followers)
-    lateinit var textViewFollowers: TextView
-    @BindView(R.id.tv_description)
-    lateinit var textViewDescription: TextView
     @BindView(R.id.rl_progress)
     lateinit var viewProgress: RelativeLayout
     @BindView(R.id.rl_retry)
@@ -49,6 +40,8 @@ class UserDetailsFragment : BaseFragment() {
     @BindView(R.id.user_detail_view)
     lateinit var viewUserDetail: LinearLayout
 
+    private lateinit var userDetailsVM: UserDetailsViewModel
+    private lateinit var binding: FragmentUserDetailsBinding
     private var unbinder: Unbinder? = null
 
     companion object {
@@ -66,10 +59,19 @@ class UserDetailsFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val fragmentView = inflater.inflate(R.layout.fragment_user_details, container, false)
+        // Data binding
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_user_details, container, false)
+        binding.lifecycleOwner = this
+
+        // Butterknife
+        val fragmentView: View = binding.root
         unbinder = ButterKnife.bind(this, fragmentView)
+
+        // View model
         userDetailsVM = ViewModelProviders.of(this, vmFactory).get(UserDetailsViewModel::class.java)
         subscribe()
+
         return fragmentView
     }
 
@@ -112,10 +114,7 @@ class UserDetailsFragment : BaseFragment() {
         // User details
         userDetailsVM.getUser().observe(this, Observer { user ->
             UIUtils.loadImageUrl(context(), imageViewCover, user.coverUrl)
-            textViewFullName.text = user.fullName
-            textViewEmail.text = user.email
-            textViewFollowers.text = user.followers.toString()
-            textViewDescription.text = user.description
+            binding.user = user
         })
     }
 
