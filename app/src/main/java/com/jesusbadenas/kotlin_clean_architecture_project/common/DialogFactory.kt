@@ -17,7 +17,7 @@ object DialogFactory {
     }
 
     private fun createConfirmDialog(
-        context: Context, title: String, message: String?,
+        context: Context, title: String?, message: String?,
         buttonTextId: Int, action: DialogInterface.OnClickListener?
     ): AlertDialog {
         // Create dialog
@@ -42,7 +42,7 @@ object DialogFactory {
     }
 
     private fun createSimpleDialog(
-        context: Context, title: String, message: String?,
+        context: Context, title: String?, message: String?,
         action: DialogInterface.OnClickListener?
     ): AlertDialog {
         // Create dialog
@@ -57,7 +57,7 @@ object DialogFactory {
     }
 
     fun createListDialog(
-        context: Context, title: String, items: List<String>,
+        context: Context, title: String?, items: List<String>,
         listener: DialogInterface.OnClickListener
     ): AlertDialog {
         // Create adapter
@@ -81,7 +81,7 @@ object DialogFactory {
     }
 
     fun showDialog(
-        context: Context, type: DialogType, title: String,
+        context: Context, type: DialogType, title: String?,
         message: String?, buttonTextId: Int, action: DialogInterface.OnClickListener?
     ): AlertDialog? {
         // Create dialog

@@ -1,5 +1,6 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.common
 
+import android.content.Context
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -50,5 +51,9 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    fun context(): Context {
+        return this
     }
 }

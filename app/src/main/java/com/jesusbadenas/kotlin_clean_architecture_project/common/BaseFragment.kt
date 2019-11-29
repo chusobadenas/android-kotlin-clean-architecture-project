@@ -32,4 +32,8 @@ abstract class BaseFragment : DaggerFragment() {
     }
 
     abstract fun onAttachToContext(context: Context)
+
+    fun context(): Context {
+        return activity!!
+    }
 }

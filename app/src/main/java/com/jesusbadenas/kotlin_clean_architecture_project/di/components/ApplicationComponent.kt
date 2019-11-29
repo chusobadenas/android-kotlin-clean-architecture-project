@@ -8,6 +8,7 @@ import com.jesusbadenas.kotlin_clean_architecture_project.di.ApplicationContext
 import com.jesusbadenas.kotlin_clean_architecture_project.di.modules.ActivityBindingsModule
 import com.jesusbadenas.kotlin_clean_architecture_project.di.modules.ApplicationModule
 import com.jesusbadenas.kotlin_clean_architecture_project.di.modules.FragmentBindingsModule
+import com.jesusbadenas.kotlin_clean_architecture_project.di.modules.ViewModelModule
 import com.jesusbadenas.kotlin_clean_architecture_project.navigation.Navigator
 import dagger.BindsInstance
 import dagger.Component
@@ -20,8 +21,13 @@ import javax.inject.Singleton
  */
 @Singleton
 @Component(
-    modules = [AndroidInjectionModule::class, ActivityBindingsModule::class,
-        FragmentBindingsModule::class, ApplicationModule::class]
+    modules = [
+        AndroidInjectionModule::class,
+        ActivityBindingsModule::class,
+        FragmentBindingsModule::class,
+        ApplicationModule::class,
+        ViewModelModule::class
+    ]
 )
 interface ApplicationComponent : AndroidInjector<App> {
 
