@@ -1,5 +1,6 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.viewmodel
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseViewModel
@@ -35,8 +36,8 @@ constructor(
     }
 
     fun loadUserList() {
-        showRetry(false)
-        showLoading(true)
+        showRetry(View.GONE)
+        showLoading(View.VISIBLE)
         getUserListUseCase.execute(UserListSubscriber(), null)
     }
 
@@ -51,13 +52,13 @@ constructor(
     private inner class UserListSubscriber : DefaultSubscriber<List<UserEntity>>() {
 
         override fun onError(throwable: Throwable) {
-            showLoading(false)
+            showLoading(View.GONE)
             showError(throwable, "Error loading user list", null, null)
-            showRetry(true)
+            showRetry(View.VISIBLE)
         }
 
         override fun onNext(users: List<UserEntity>) {
-            showLoading(false)
+            showLoading(View.GONE)
             showUsersCollectionInView(users)
         }
     }

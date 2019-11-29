@@ -1,5 +1,6 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.viewmodel
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseViewModel
@@ -29,8 +30,8 @@ constructor(
     }
 
     fun loadUserDetails(userId: Int) {
-        showRetry(false)
-        showLoading(true)
+        showRetry(View.GONE)
+        showLoading(View.VISIBLE)
         val params: Map<String, Int> = hashMapOf("id" to userId)
         getUserDetailsUseCase.execute(UserDetailsSubscriber(), params)
     }
@@ -42,13 +43,13 @@ constructor(
     private inner class UserDetailsSubscriber : DefaultSubscriber<UserEntity>() {
 
         override fun onError(throwable: Throwable) {
-            showLoading(false)
+            showLoading(View.GONE)
             showError(throwable, "Error loading user details", null, null)
-            showRetry(true)
+            showRetry(View.VISIBLE)
         }
 
         override fun onNext(user: UserEntity) {
-            showLoading(false)
+            showLoading(View.GONE)
             showUserDetailsInView(user)
         }
     }

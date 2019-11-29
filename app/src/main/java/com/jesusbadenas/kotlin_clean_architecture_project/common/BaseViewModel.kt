@@ -1,34 +1,44 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.common
 
 import android.content.DialogInterface
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 abstract class BaseViewModel : ViewModel() {
 
-    private val isLoading: MutableLiveData<Boolean> = MutableLiveData()
-    private val isRetry: MutableLiveData<Boolean> = MutableLiveData()
-    private val hasError: MutableLiveData<Resource<UIError>> = MutableLiveData()
+    private val containerVisibility: MutableLiveData<Int> = MutableLiveData()
+    private val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
+    private val retryVisibility: MutableLiveData<Int> = MutableLiveData()
+    private val uiError: MutableLiveData<Resource<UIError>> = MutableLiveData()
 
-    fun isLoading(): LiveData<Boolean> {
-        return isLoading
+    fun getContainerVisibility(): LiveData<Int> {
+        return containerVisibility
     }
 
-    fun isRetry(): LiveData<Boolean> {
-        return isRetry
+    fun getLoadingVisibility(): LiveData<Int> {
+        return loadingVisibility
     }
 
-    fun hasError(): LiveData<Resource<UIError>> {
-        return hasError
+    fun getRetryVisibility(): LiveData<Int> {
+        return retryVisibility
     }
 
-    fun showLoading(loading: Boolean) {
-        isLoading.value = loading
+    fun getUIError(): LiveData<Resource<UIError>> {
+        return uiError
     }
 
-    fun showRetry(retry: Boolean) {
-        isRetry.value = retry
+    fun showLoading(loadingVisibility: Int) {
+        this.loadingVisibility.value = loadingVisibility
+        this.containerVisibility.value =
+            if (loadingVisibility == View.VISIBLE) View.GONE else View.VISIBLE
+    }
+
+    fun showRetry(retryVisibility: Int) {
+        this.retryVisibility.value = retryVisibility
+        this.containerVisibility.value =
+            if (retryVisibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
 
     fun showError(
@@ -37,6 +47,6 @@ abstract class BaseViewModel : ViewModel() {
         errorMsgId: Int?,
         action: DialogInterface.OnClickListener?
     ) {
-        hasError.value = Resource.Error(UIError(throwable, logMessage, errorMsgId, action))
+        uiError.value = Resource.Error(UIError(throwable, logMessage, errorMsgId, action))
     }
 }
