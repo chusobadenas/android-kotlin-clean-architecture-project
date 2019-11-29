@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -18,6 +18,7 @@ import butterknife.Unbinder
 import com.jesusbadenas.kotlin_clean_architecture_project.R
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseFragment
 import com.jesusbadenas.kotlin_clean_architecture_project.common.UIUtils
+import com.jesusbadenas.kotlin_clean_architecture_project.databinding.FragmentUserListBinding
 import com.jesusbadenas.kotlin_clean_architecture_project.entities.User
 import com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.UserListViewModel
 import javax.inject.Inject
@@ -27,8 +28,6 @@ import javax.inject.Inject
  */
 class UserListFragment : BaseFragment() {
 
-    private lateinit var userListVM: UserListViewModel
-
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
     @Inject
@@ -36,12 +35,11 @@ class UserListFragment : BaseFragment() {
 
     @BindView(R.id.rv_users)
     lateinit var viewUsers: RecyclerView
-    @BindView(R.id.rl_progress)
-    lateinit var viewProgress: RelativeLayout
-    @BindView(R.id.rl_retry)
-    lateinit var viewRetry: RelativeLayout
     @BindView(R.id.swipe_container)
     lateinit var swipeRefresh: SwipeRefreshLayout
+
+    private lateinit var userListVM: UserListViewModel
+    private lateinit var binding: FragmentUserListBinding
 
     private var userListListener: UserListListener? = null
     private var unbinder: Unbinder? = null
@@ -73,11 +71,24 @@ class UserListFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val fragmentView = inflater.inflate(R.layout.fragment_user_list, container, false)
+        // Data binding
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_list, container, false)
+        binding.lifecycleOwner = this
+
+        // Butterknife
+        val fragmentView = binding.root
         unbinder = ButterKnife.bind(this, fragmentView)
+
+        // View model
         userListVM = ViewModelProviders.of(this, vmFactory).get(UserListViewModel::class.java)
+        binding.viewModel = userListVM
+        binding.viewProgress.viewModel = userListVM
+        binding.viewRetry.viewModel = userListVM
         subscribe()
+
+        // Initialize list
         setupRecyclerView()
+
         return fragmentView
     }
 
@@ -94,8 +105,10 @@ class UserListFragment : BaseFragment() {
 
     private fun setupRecyclerView() {
         usersAdapter.setOnItemClickListener(onItemClickListener)
-        viewUsers.layoutManager = UsersLayoutManager(context())
-        viewUsers.adapter = usersAdapter
+        viewUsers.apply {
+            layoutManager = UsersLayoutManager(context())
+            adapter = usersAdapter
+        }
 
         swipeRefresh.setColorSchemeResources(R.color.primary)
         swipeRefresh.setOnRefreshListener {
@@ -104,29 +117,8 @@ class UserListFragment : BaseFragment() {
     }
 
     private fun subscribe() {
-        // Loading
-        userListVM.isLoading().observe(this, Observer { loading ->
-            swipeRefresh.isRefreshing = loading
-            if (loading) {
-                swipeRefresh.visibility = View.GONE
-                viewProgress.visibility = View.VISIBLE
-            } else {
-                swipeRefresh.visibility = View.VISIBLE
-                viewProgress.visibility = View.GONE
-            }
-        })
-
-        // Retry
-        userListVM.isRetry().observe(this, Observer { retry ->
-            if (retry) {
-                viewRetry.visibility = View.VISIBLE
-            } else {
-                viewRetry.visibility = View.GONE
-            }
-        })
-
         // Error
-        userListVM.hasError().observe(this, Observer { resource ->
+        userListVM.getUIError().observe(this, Observer { resource ->
             UIUtils.showError(context(), resource.data)
         })
 
