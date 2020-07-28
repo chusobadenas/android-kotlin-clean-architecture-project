@@ -17,8 +17,15 @@ android {
     }
 
     buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            shrinkResources false
+        }
         release {
+            debuggable false
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -46,28 +53,31 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation rootProject.ext.kotlin
-    implementation rootProject.ext.androidXAppCompat
-    implementation rootProject.ext.androidXCoreKtx
+    implementation rootProject.ext.androidAppCompat
+    implementation rootProject.ext.androidConstraintLayout
+    implementation rootProject.ext.androidCoreKtx
     implementation rootProject.ext.androidMaterial
     implementation rootProject.ext.androidRecyclerView
-    implementation rootProject.ext.butterknife
-    implementation rootProject.ext.dagger
-    implementation rootProject.ext.daggerAndroid
-    implementation rootProject.ext.daggerAndroidSupport
+    implementation rootProject.ext.coroutinesAndroid
+    implementation rootProject.ext.coroutinesCore
+    implementation rootProject.ext.design
+    implementation rootProject.ext.designSupport
+    implementation rootProject.ext.glide
+    implementation rootProject.ext.koinAndroid
+    implementation rootProject.ext.koinFragment
+    implementation rootProject.ext.koinViewModel
+    implementation rootProject.ext.kotlin
     implementation rootProject.ext.lifeCycleExtensions
+    implementation rootProject.ext.lifeCycleLiveDataKtx
+    implementation rootProject.ext.lifeCycleViewModelKtx
     implementation rootProject.ext.loggingInterceptor
     implementation rootProject.ext.retrofit
     implementation rootProject.ext.retrofitConverterGson
     implementation rootProject.ext.retrofitRxJava
-    implementation rootProject.ext.glide
     implementation rootProject.ext.rxAndroid
     implementation rootProject.ext.rxJava
     implementation rootProject.ext.timber
 
-    kapt rootProject.ext.butterknifeCompiler
-    kapt rootProject.ext.daggerCompiler
-    kapt rootProject.ext.daggerAndroidProcessor
     kapt rootProject.ext.dataBindingCompiler
     kapt rootProject.ext.glideCompiler
     kapt rootProject.ext.lifeCycleCompiler
