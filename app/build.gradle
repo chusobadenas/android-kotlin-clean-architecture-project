@@ -87,6 +87,7 @@ dependencies {
     testImplementation rootProject.ext.androidXTestCore
     testImplementation rootProject.ext.archCore
     testImplementation rootProject.ext.jUnit
+    testImplementation rootProject.ext.koinTest
     testImplementation rootProject.ext.mockk
     testImplementation rootProject.ext.robolectric
 

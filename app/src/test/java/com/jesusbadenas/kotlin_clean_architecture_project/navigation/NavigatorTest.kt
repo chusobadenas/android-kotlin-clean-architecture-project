@@ -9,12 +9,13 @@ import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 @Config(application = App::class, sdk = [27])
-class NavigatorTest {
+class NavigatorTest: AutoCloseKoinTest() {
 
     private val navigator = Navigator()
 

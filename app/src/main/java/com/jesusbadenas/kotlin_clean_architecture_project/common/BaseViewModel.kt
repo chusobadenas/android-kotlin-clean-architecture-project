@@ -8,26 +8,10 @@ import androidx.lifecycle.ViewModel
 
 abstract class BaseViewModel : ViewModel() {
 
-    private val containerVisibility: MutableLiveData<Int> = MutableLiveData()
-    private val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
-    private val retryVisibility: MutableLiveData<Int> = MutableLiveData()
-    private val uiError: MutableLiveData<Resource<UIError>> = MutableLiveData()
-
-    fun getContainerVisibility(): LiveData<Int> {
-        return containerVisibility
-    }
-
-    fun getLoadingVisibility(): LiveData<Int> {
-        return loadingVisibility
-    }
-
-    fun getRetryVisibility(): LiveData<Int> {
-        return retryVisibility
-    }
-
-    fun getUIError(): LiveData<Resource<UIError>> {
-        return uiError
-    }
+    val containerVisibility: MutableLiveData<Int> = MutableLiveData()
+    val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
+    val retryVisibility: MutableLiveData<Int> = MutableLiveData()
+    val uiError: MutableLiveData<Resource<UIError>> = MutableLiveData()
 
     fun showLoading(loadingVisibility: Int) {
         this.loadingVisibility.value = loadingVisibility

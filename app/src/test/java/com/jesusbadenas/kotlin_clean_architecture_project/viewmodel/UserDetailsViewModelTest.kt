@@ -31,8 +31,8 @@ class UserDetailsViewModelTest {
     @Test
     fun testLoadUserDetailsSuccess() {
         userDetailsVM.loadUserDetails(1)
-        assertEquals(userDetailsVM.getRetryVisibility().value, View.GONE)
-        assertEquals(userDetailsVM.getLoadingVisibility().value, View.VISIBLE)
+        assertEquals(userDetailsVM.retryVisibility.value, View.GONE)
+        assertEquals(userDetailsVM.loadingVisibility.value, View.VISIBLE)
         verify { getUserDetails.execute(any(), eq(hashMapOf("id" to 1))) }
     }
 }

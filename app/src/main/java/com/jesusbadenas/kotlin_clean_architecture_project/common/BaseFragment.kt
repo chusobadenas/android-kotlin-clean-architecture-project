@@ -6,12 +6,11 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import dagger.android.support.DaggerFragment
 
 /**
  * Base [Fragment] class for every fragment in this application.
  */
-abstract class BaseFragment : DaggerFragment() {
+abstract class BaseFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +32,5 @@ abstract class BaseFragment : DaggerFragment() {
 
     abstract fun onAttachToContext(context: Context)
 
-    fun context(): Context {
-        return activity!!
-    }
+    fun context(): Context = requireActivity()
 }

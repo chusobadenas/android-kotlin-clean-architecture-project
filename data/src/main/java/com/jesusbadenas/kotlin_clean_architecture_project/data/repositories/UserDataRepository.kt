@@ -5,15 +5,11 @@ import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.mappers.
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.entities.UserEntity
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories.UserRepository
 import io.reactivex.Observable
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * [UserRepository] for retrieving user data.
  */
-@Singleton
 class UserDataRepository
-@Inject
 constructor(
     private val apiService: APIService,
     private val userDataMapper: UserDataMapper

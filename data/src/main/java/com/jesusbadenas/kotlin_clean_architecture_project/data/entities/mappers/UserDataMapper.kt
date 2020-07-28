@@ -2,18 +2,14 @@ package com.jesusbadenas.kotlin_clean_architecture_project.data.entities.mappers
 
 import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.entities.UserEntity
-import java.util.*
-import javax.inject.Inject
-import javax.inject.Singleton
+import java.util.ArrayList
 
 /**
  * Mapper class used to transform [UserData] (in the data layer) to [UserEntity] in the
  * domain layer.
  */
-@Singleton
-class UserDataMapper
-@Inject
-constructor() {
+class UserDataMapper {
+
     fun transform(userData: UserData): UserEntity {
         return UserEntity(
             userData.userId,

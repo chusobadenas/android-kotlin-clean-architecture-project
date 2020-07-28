@@ -1,7 +1,6 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.viewmodel
 
 import android.view.View
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseViewModel
 import com.jesusbadenas.kotlin_clean_architecture_project.common.Resource
@@ -10,25 +9,15 @@ import com.jesusbadenas.kotlin_clean_architecture_project.domain.common.UseCase
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.entities.UserEntity
 import com.jesusbadenas.kotlin_clean_architecture_project.entities.User
 import com.jesusbadenas.kotlin_clean_architecture_project.entities.mappers.UserEntityMapper
-import javax.inject.Inject
 
 class UserListViewModel
-@Inject
 constructor(
-    val getUserListUseCase: UseCase<List<UserEntity>>,
-    val userEntityMapper: UserEntityMapper
+    private val getUserListUseCase: UseCase<List<UserEntity>>,
+    private val userEntityMapper: UserEntityMapper
 ) : BaseViewModel() {
 
-    private val userList: MutableLiveData<List<User>> = MutableLiveData()
-    private val userClicked: MutableLiveData<Resource<User>> = MutableLiveData()
-
-    fun getUserList(): LiveData<List<User>> {
-        return userList
-    }
-
-    fun getUserClicked(): LiveData<Resource<User>> {
-        return userClicked
-    }
+    val userList: MutableLiveData<List<User>> = MutableLiveData()
+    val userClicked: MutableLiveData<Resource<User>> = MutableLiveData()
 
     override fun onCleared() {
         super.onCleared()
