@@ -7,48 +7,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
-import butterknife.Unbinder
 import com.jesusbadenas.kotlin_clean_architecture_project.R
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseFragment
 import com.jesusbadenas.kotlin_clean_architecture_project.common.UIUtils
 import com.jesusbadenas.kotlin_clean_architecture_project.databinding.FragmentUserListBinding
 import com.jesusbadenas.kotlin_clean_architecture_project.entities.User
 import com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.UserListViewModel
-import javax.inject.Inject
+import kotlinx.android.synthetic.main.fragment_user_list.*
+import kotlinx.android.synthetic.main.view_retry.*
+import org.koin.android.ext.android.inject
 
 /**
  * Fragment that shows a list of Users.
  */
 class UserListFragment : BaseFragment() {
 
-    @Inject
-    lateinit var vmFactory: ViewModelProvider.Factory
-    @Inject
-    lateinit var usersAdapter: UserAdapter
+    private val usersAdapter: UserAdapter by inject()
+    private val userListVM: UserListViewModel by inject()
 
-    @BindView(R.id.rv_users)
-    lateinit var viewUsers: RecyclerView
-    @BindView(R.id.swipe_container)
-    lateinit var swipeRefresh: SwipeRefreshLayout
-
-    private lateinit var userListVM: UserListViewModel
     private lateinit var binding: FragmentUserListBinding
 
     private var userListListener: UserListListener? = null
-    private var unbinder: Unbinder? = null
-
-    companion object {
-        fun newInstance(): UserListFragment {
-            return UserListFragment()
-        }
-    }
 
     private val onItemClickListener = object : UserAdapter.OnItemClickListener {
         override fun onUserItemClicked(user: User) {
@@ -75,21 +54,23 @@ class UserListFragment : BaseFragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_list, container, false)
         binding.lifecycleOwner = this
 
-        // Butterknife
-        val fragmentView = binding.root
-        unbinder = ButterKnife.bind(this, fragmentView)
-
         // View model
-        userListVM = ViewModelProviders.of(this, vmFactory).get(UserListViewModel::class.java)
         binding.viewModel = userListVM
         binding.viewProgress.viewModel = userListVM
         binding.viewRetry.viewModel = userListVM
         subscribe()
 
+        return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         // Initialize list
         setupRecyclerView()
-
-        return fragmentView
+        // Retry button
+        bt_retry.setOnClickListener {
+            loadUserList()
+        }
     }
 
     override fun onStart() {
@@ -99,46 +80,40 @@ class UserListFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewUsers.adapter = null
-        unbinder?.unbind()
+        rv_users.adapter = null
     }
 
     private fun setupRecyclerView() {
         usersAdapter.setOnItemClickListener(onItemClickListener)
-        viewUsers.apply {
+        rv_users.apply {
             layoutManager = UsersLayoutManager(context())
             adapter = usersAdapter
         }
 
-        swipeRefresh.setColorSchemeResources(R.color.primary)
-        swipeRefresh.setOnRefreshListener {
+        swipe_container.setColorSchemeResources(R.color.primary)
+        swipe_container.setOnRefreshListener {
             loadUserList()
         }
     }
 
     private fun subscribe() {
         // Error
-        userListVM.getUIError().observe(this, Observer { resource ->
+        userListVM.uiError.observe(viewLifecycleOwner, Observer { resource ->
             UIUtils.showError(context(), resource.data)
         })
 
         // User list
-        userListVM.getUserList().observe(this, Observer { users ->
+        userListVM.userList.observe(viewLifecycleOwner, Observer { users ->
             usersAdapter.setUsers(users)
         })
 
         // User clicked
-        userListVM.getUserClicked().observe(this, Observer { resource ->
+        userListVM.userClicked.observe(viewLifecycleOwner, Observer { resource ->
             userListListener?.onUserClicked(resource.data)
         })
     }
 
     private fun loadUserList() {
         userListVM.loadUserList()
-    }
-
-    @OnClick(R.id.bt_retry)
-    fun onButtonRetryClick() {
-        loadUserList()
     }
 }

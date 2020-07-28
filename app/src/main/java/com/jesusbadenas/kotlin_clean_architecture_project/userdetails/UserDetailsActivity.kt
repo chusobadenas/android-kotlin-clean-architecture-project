@@ -3,19 +3,14 @@ package com.jesusbadenas.kotlin_clean_architecture_project.userdetails
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.jesusbadenas.kotlin_clean_architecture_project.R
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseActivity
+import kotlinx.android.synthetic.main.toolbar.*
 
 /**
  * Activity that shows details of a certain user.
  */
 class UserDetailsActivity : BaseActivity() {
-
-    @BindView(R.id.toolbar)
-    lateinit var toolbar: Toolbar
 
     var userId: Int = -1
 
@@ -34,7 +29,6 @@ class UserDetailsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_layout)
         this.initializeActivity(savedInstanceState)
-        ButterKnife.bind(this)
         setupToolbar()
     }
 
@@ -53,7 +47,7 @@ class UserDetailsActivity : BaseActivity() {
             userId = it.getInt(STATE_PARAM_USER_ID)
         } ?: run {
             userId = intent.getIntExtra(INTENT_PARAM_USER_ID, -1)
-            addFragment(R.id.fragmentContainer, UserDetailsFragment.newInstance())
+            addFragment(R.id.fragmentContainer, UserDetailsFragment::class.java)
         }
     }
 }

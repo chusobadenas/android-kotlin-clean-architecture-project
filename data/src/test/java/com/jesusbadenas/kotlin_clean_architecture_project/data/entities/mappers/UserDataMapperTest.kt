@@ -30,12 +30,12 @@ class UserDataMapperTest {
     fun testTransformToUserEntity() {
         val userEntity = userDataMapper.transform(userData)
 
-        assertEquals(userEntity?.coverUrl, COVER_URL)
-        assertEquals(userEntity?.description, DESCRIPTION)
-        assertEquals(userEntity?.email, EMAIL)
-        assertSame(userEntity?.followers, FOLLOWERS)
-        assertEquals(userEntity?.fullName, FULL_NAME)
-        assertSame(userEntity?.userId, USER_ID)
+        assertEquals(userEntity.coverUrl, COVER_URL)
+        assertEquals(userEntity.description, DESCRIPTION)
+        assertEquals(userEntity.email, EMAIL)
+        assertSame(userEntity.followers, FOLLOWERS)
+        assertEquals(userEntity.fullName, FULL_NAME)
+        assertSame(userEntity.userId, USER_ID)
     }
 
     @Test

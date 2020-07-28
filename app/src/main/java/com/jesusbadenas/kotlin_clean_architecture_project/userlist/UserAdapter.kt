@@ -7,21 +7,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.jesusbadenas.kotlin_clean_architecture_project.R
 import com.jesusbadenas.kotlin_clean_architecture_project.common.UIUtils
-import com.jesusbadenas.kotlin_clean_architecture_project.di.ApplicationContext
 import com.jesusbadenas.kotlin_clean_architecture_project.entities.User
-import java.util.*
-import javax.inject.Inject
+import kotlinx.android.synthetic.main.item_user.view.*
+import java.util.Locale
 
 /**
  * Adapter that manages a collection of {@link UserModel}.
  */
 class UserAdapter
-@Inject
-constructor(@ApplicationContext context: Context) :
+constructor(context: Context) :
     RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
     interface OnItemClickListener {
@@ -86,15 +82,7 @@ constructor(@ApplicationContext context: Context) :
     }
 
     class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        @BindView(R.id.image_user)
-        lateinit var userImage: ImageView
-
-        @BindView(R.id.text_name)
-        lateinit var textViewTitle: TextView
-
-        init {
-            ButterKnife.bind(this, itemView)
-        }
+        val userImage: ImageView = itemView.image_user
+        val textViewTitle: TextView = itemView.text_name
     }
 }

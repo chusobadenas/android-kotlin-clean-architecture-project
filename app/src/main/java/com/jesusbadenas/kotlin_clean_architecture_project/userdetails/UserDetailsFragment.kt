@@ -7,34 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import butterknife.OnClick
-import butterknife.Unbinder
 import com.jesusbadenas.kotlin_clean_architecture_project.R
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseFragment
 import com.jesusbadenas.kotlin_clean_architecture_project.common.UIUtils
 import com.jesusbadenas.kotlin_clean_architecture_project.databinding.FragmentUserDetailsBinding
 import com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.UserDetailsViewModel
-import javax.inject.Inject
+import kotlinx.android.synthetic.main.view_retry.*
+import org.koin.android.ext.android.inject
 
 /**
  * Fragment that shows details of a certain User.
  */
 class UserDetailsFragment : BaseFragment() {
 
-    @Inject
-    lateinit var vmFactory: ViewModelProvider.Factory
-
-    private lateinit var userDetailsVM: UserDetailsViewModel
+    private val userDetailsVM: UserDetailsViewModel by inject()
     private lateinit var binding: FragmentUserDetailsBinding
-    private var unbinder: Unbinder? = null
-
-    companion object {
-        fun newInstance(): UserDetailsFragment {
-            return UserDetailsFragment()
-        }
-    }
 
     override fun onAttachToContext(context: Context) {
         // do nothing
@@ -51,7 +38,6 @@ class UserDetailsFragment : BaseFragment() {
         binding.lifecycleOwner = this
 
         // View model
-        userDetailsVM = ViewModelProviders.of(this, vmFactory).get(UserDetailsViewModel::class.java)
         binding.viewModel = userDetailsVM
         binding.viewProgress.viewModel = userDetailsVM
         binding.viewRetry.viewModel = userDetailsVM
@@ -60,24 +46,27 @@ class UserDetailsFragment : BaseFragment() {
         return binding.root
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        // Retry button
+        bt_retry.setOnClickListener {
+            loadUserDetails()
+        }
+    }
+
     override fun onStart() {
         super.onStart()
         loadUserDetails()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        unbinder?.unbind()
-    }
-
     private fun subscribe() {
         // Error
-        userDetailsVM.getUIError().observe(this, Observer { resource ->
+        userDetailsVM.uiError.observe(viewLifecycleOwner, Observer { resource ->
             UIUtils.showError(context(), resource.data)
         })
 
         // User details
-        userDetailsVM.getUser().observe(this, Observer { user ->
+        userDetailsVM.user.observe(viewLifecycleOwner, Observer { user ->
             binding.user = user
         })
     }
@@ -85,10 +74,5 @@ class UserDetailsFragment : BaseFragment() {
     private fun loadUserDetails() {
         val userId = (activity as UserDetailsActivity).userId
         userDetailsVM.loadUserDetails(userId)
-    }
-
-    @OnClick(R.id.bt_retry)
-    fun onButtonRetryClick() {
-        loadUserDetails()
     }
 }

@@ -4,7 +4,7 @@ import android.content.Context
 import android.widget.ImageView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.jesusbadenas.kotlin_clean_architecture_project.R
-import com.jesusbadenas.kotlin_clean_architecture_project.di.modules.GlideApp
+import com.jesusbadenas.kotlin_clean_architecture_project.di.GlideApp
 import timber.log.Timber
 
 /**

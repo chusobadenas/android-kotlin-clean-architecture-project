@@ -32,8 +32,8 @@ class UserListViewModelTest {
     @Test
     fun testLoadUserListSuccess() {
         userListVM.loadUserList()
-        assertEquals(userListVM.getRetryVisibility().value, View.GONE)
-        assertEquals(userListVM.getLoadingVisibility().value, View.VISIBLE)
+        assertEquals(userListVM.retryVisibility.value, View.GONE)
+        assertEquals(userListVM.loadingVisibility.value, View.VISIBLE)
         verify { getUserList.execute(any(), null) }
     }
 
@@ -41,6 +41,6 @@ class UserListViewModelTest {
     fun testOnUserClickedSuccess() {
         val user = User(1)
         userListVM.onUserClicked(user)
-        assertEquals(userListVM.getUserClicked().value?.data?.userId, 1)
+        assertEquals(userListVM.userClicked.value?.data?.userId, 1)
     }
 }

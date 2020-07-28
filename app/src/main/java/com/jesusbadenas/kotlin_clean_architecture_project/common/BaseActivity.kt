@@ -5,35 +5,38 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.jesusbadenas.kotlin_clean_architecture_project.navigation.Navigator
-import dagger.android.support.DaggerAppCompatActivity
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
 /**
  * Base [AppCompatActivity] class for every Activity in this application.
  */
-abstract class BaseActivity : DaggerAppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var navigator: Navigator
+    protected val navigator: Navigator by inject()
 
-    fun addFragment(containerViewId: Int, fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .add(containerViewId, fragment)
-            .commit()
-    }
-
-    fun replaceFragment(containerViewId: Int, fragment: Fragment, addToBackStack: Boolean) {
-        var transaction =
-            supportFragmentManager.beginTransaction().replace(containerViewId, fragment)
-        if (addToBackStack) {
-            transaction = transaction.addToBackStack(null)
+    fun addFragment(containerViewId: Int, fragmentClass: Class<out Fragment>) {
+        supportFragmentManager.beginTransaction().apply {
+            add(containerViewId, fragmentClass, null, null)
+            commit()
         }
-        transaction.commit()
     }
 
-    fun getCurrentFragment(containerId: Int): Fragment? {
-        return supportFragmentManager.findFragmentById(containerId)
+    fun replaceFragment(
+        containerViewId: Int,
+        fragmentClass: Class<out Fragment>,
+        addToBackStack: Boolean
+    ) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(containerViewId, fragmentClass, null, null)
+            if (addToBackStack) {
+                addToBackStack(null)
+            }
+            commit()
+        }
     }
+
+    fun getCurrentFragment(containerId: Int): Fragment? =
+        supportFragmentManager.findFragmentById(containerId)
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         var result = super.onOptionsItemSelected(item)
@@ -53,7 +56,5 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
         }
     }
 
-    fun context(): Context {
-        return this
-    }
+    fun context(): Context = this
 }

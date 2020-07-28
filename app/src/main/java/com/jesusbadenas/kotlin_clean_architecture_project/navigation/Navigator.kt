@@ -3,16 +3,12 @@ package com.jesusbadenas.kotlin_clean_architecture_project.navigation
 import android.content.Context
 import com.jesusbadenas.kotlin_clean_architecture_project.userdetails.UserDetailsActivity
 import com.jesusbadenas.kotlin_clean_architecture_project.userlist.UserListActivity
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Class used to navigate through the application.
  */
-@Singleton
-class Navigator
-@Inject
-constructor() {
+class Navigator {
+
     fun navigateToUserList(context: Context) {
         val intentToLaunch = UserListActivity.getCallingIntent(context)
         context.startActivity(intentToLaunch)

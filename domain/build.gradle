@@ -30,16 +30,11 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation rootProject.ext.androidAppCompat
+    implementation rootProject.ext.koinAndroid
     implementation rootProject.ext.kotlin
-    implementation rootProject.ext.androidXAppCompat
-    implementation rootProject.ext.dagger
-    implementation rootProject.ext.daggerAndroid
-    implementation rootProject.ext.daggerAndroidSupport
     implementation rootProject.ext.rxAndroid
     implementation rootProject.ext.rxJava
-
-    kapt rootProject.ext.daggerCompiler
-    kapt rootProject.ext.daggerAndroidProcessor
 
     testImplementation rootProject.ext.jUnit
     testImplementation rootProject.ext.mockk
