@@ -2,16 +2,15 @@ package com.jesusbadenas.kotlin_clean_architecture_project.common
 
 import android.content.DialogInterface
 import android.view.View
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 abstract class BaseViewModel : ViewModel() {
 
-    val containerVisibility: MutableLiveData<Int> = MutableLiveData()
-    val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
-    val retryVisibility: MutableLiveData<Int> = MutableLiveData()
-    val uiError: MutableLiveData<Resource<UIError>> = MutableLiveData()
+    val containerVisibility = MutableLiveData<Int>()
+    val loadingVisibility = MutableLiveData<Int>()
+    val retryVisibility = MutableLiveData<Int>()
+    val uiError = MutableLiveData<UIError>()
 
     fun showLoading(loadingVisibility: Int) {
         this.loadingVisibility.value = loadingVisibility
@@ -31,6 +30,6 @@ abstract class BaseViewModel : ViewModel() {
         errorMsgId: Int?,
         action: DialogInterface.OnClickListener?
     ) {
-        uiError.value = Resource.Error(UIError(throwable, logMessage, errorMsgId, action))
+        uiError.value = UIError(throwable, logMessage, errorMsgId, action)
     }
 }

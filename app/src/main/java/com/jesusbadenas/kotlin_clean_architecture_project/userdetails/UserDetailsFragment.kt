@@ -61,8 +61,8 @@ class UserDetailsFragment : BaseFragment() {
 
     private fun subscribe() {
         // Error
-        userDetailsVM.uiError.observe(viewLifecycleOwner, Observer { resource ->
-            UIUtils.showError(context(), resource.data)
+        userDetailsVM.uiError.observe(viewLifecycleOwner, Observer { error ->
+            UIUtils.showError(context(), error)
         })
 
         // User details

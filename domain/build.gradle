@@ -29,13 +29,15 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':data')
 
     implementation rootProject.ext.androidAppCompat
+    implementation rootProject.ext.coroutinesCore
     implementation rootProject.ext.koinAndroid
     implementation rootProject.ext.kotlin
-    implementation rootProject.ext.rxAndroid
-    implementation rootProject.ext.rxJava
 
+    testImplementation rootProject.ext.archCore
+    testImplementation rootProject.ext.coroutinesTest
     testImplementation rootProject.ext.jUnit
     testImplementation rootProject.ext.mockk
 }

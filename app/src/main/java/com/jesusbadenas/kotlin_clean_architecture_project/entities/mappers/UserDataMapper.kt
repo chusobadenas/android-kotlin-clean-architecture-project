@@ -1,12 +1,12 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.entities.mappers
 
-import com.jesusbadenas.kotlin_clean_architecture_project.domain.common.Mapper
-import com.jesusbadenas.kotlin_clean_architecture_project.domain.entities.UserEntity
+import com.jesusbadenas.kotlin_clean_architecture_project.common.Mapper
+import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
 import com.jesusbadenas.kotlin_clean_architecture_project.entities.User
 
-class UserEntityMapper : Mapper<UserEntity, User>() {
+class UserDataMapper : Mapper<UserData, User>() {
 
-    override fun mapFrom(from: UserEntity) = User(
+    override fun mapFrom(from: UserData) = User(
         from.userId,
         from.coverUrl,
         from.fullName,
@@ -15,7 +15,7 @@ class UserEntityMapper : Mapper<UserEntity, User>() {
         from.followers
     )
 
-    override fun mapFrom(from: List<UserEntity>): List<User> {
+    override fun mapFrom(from: List<UserData>): List<User> {
         val userList: ArrayList<User> = ArrayList()
         if (from.isNotEmpty()) {
             for (userEntity in from) {

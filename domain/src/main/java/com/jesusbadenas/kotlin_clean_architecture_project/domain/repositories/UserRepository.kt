@@ -1,14 +1,24 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories
 
-import com.jesusbadenas.kotlin_clean_architecture_project.domain.entities.UserEntity
-import io.reactivex.Observable
+import com.jesusbadenas.kotlin_clean_architecture_project.data.api.APIService
+import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
- * Interface that represents a Repository for getting [UserEntity] related data.
+ * [UserRepository] for retrieving user data.
  */
-interface UserRepository {
+class UserRepository(
+    private val apiService: APIService
+) {
 
-    fun users(): Observable<List<UserEntity>>
+    suspend fun users(): List<UserData> =
+        withContext(Dispatchers.IO) {
+            apiService.userDataList()
+        }
 
-    fun user(userId: Int): Observable<UserEntity>
+    suspend fun user(userId: Int): UserData =
+        withContext(Dispatchers.IO) {
+            apiService.userDataById(userId)
+        }
 }

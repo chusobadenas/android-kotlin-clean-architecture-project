@@ -2,53 +2,41 @@ package com.jesusbadenas.kotlin_clean_architecture_project.viewmodel
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseViewModel
-import com.jesusbadenas.kotlin_clean_architecture_project.common.Resource
-import com.jesusbadenas.kotlin_clean_architecture_project.domain.common.DefaultSubscriber
-import com.jesusbadenas.kotlin_clean_architecture_project.domain.common.UseCase
-import com.jesusbadenas.kotlin_clean_architecture_project.domain.entities.UserEntity
+import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
+import com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories.UserRepository
 import com.jesusbadenas.kotlin_clean_architecture_project.entities.User
-import com.jesusbadenas.kotlin_clean_architecture_project.entities.mappers.UserEntityMapper
+import com.jesusbadenas.kotlin_clean_architecture_project.entities.mappers.UserDataMapper
+import kotlinx.coroutines.launch
 
-class UserListViewModel
-constructor(
-    private val getUserListUseCase: UseCase<List<UserEntity>>,
-    private val userEntityMapper: UserEntityMapper
+class UserListViewModel(
+    private val userRepository: UserRepository,
+    private val userDataMapper: UserDataMapper
 ) : BaseViewModel() {
 
-    val userList: MutableLiveData<List<User>> = MutableLiveData()
-    val userClicked: MutableLiveData<Resource<User>> = MutableLiveData()
+    val userList = MutableLiveData<List<User>>()
 
-    override fun onCleared() {
-        super.onCleared()
-        getUserListUseCase.unsubscribe()
+    private fun failure(exception: Exception) {
+        showLoading(View.GONE)
+        showError(exception, "Error loading user list", null, null)
+        showRetry(View.VISIBLE)
+    }
+
+    private fun success(users: List<UserData>) {
+        showLoading(View.GONE)
+        userList.value = users.map { userDataMapper.mapFrom(it) }
     }
 
     fun loadUserList() {
         showRetry(View.GONE)
         showLoading(View.VISIBLE)
-        getUserListUseCase.execute(UserListSubscriber(), null)
-    }
-
-    private fun showUsersCollectionInView(userEntities: List<UserEntity>) {
-        userList.value = userEntityMapper.mapFrom(userEntities)
-    }
-
-    fun onUserClicked(user: User) {
-        userClicked.value = Resource.Success(user)
-    }
-
-    private inner class UserListSubscriber : DefaultSubscriber<List<UserEntity>>() {
-
-        override fun onError(throwable: Throwable) {
-            showLoading(View.GONE)
-            showError(throwable, "Error loading user list", null, null)
-            showRetry(View.VISIBLE)
-        }
-
-        override fun onNext(users: List<UserEntity>) {
-            showLoading(View.GONE)
-            showUsersCollectionInView(users)
+        viewModelScope.launch {
+            try {
+                success(userRepository.users())
+            } catch (exception: Exception) {
+                failure(exception)
+            }
         }
     }
 }

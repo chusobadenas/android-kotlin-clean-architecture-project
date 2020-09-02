@@ -31,7 +31,7 @@ class UserListFragment : BaseFragment() {
 
     private val onItemClickListener = object : UserAdapter.OnItemClickListener {
         override fun onUserItemClicked(user: User) {
-            userListVM.onUserClicked(user)
+            userListListener?.onUserClicked(user)
         }
     }
 
@@ -98,18 +98,13 @@ class UserListFragment : BaseFragment() {
 
     private fun subscribe() {
         // Error
-        userListVM.uiError.observe(viewLifecycleOwner, Observer { resource ->
-            UIUtils.showError(context(), resource.data)
+        userListVM.uiError.observe(viewLifecycleOwner, Observer { error ->
+            UIUtils.showError(context(), error)
         })
 
         // User list
         userListVM.userList.observe(viewLifecycleOwner, Observer { users ->
             usersAdapter.setUsers(users)
-        })
-
-        // User clicked
-        userListVM.userClicked.observe(viewLifecycleOwner, Observer { resource ->
-            userListListener?.onUserClicked(resource.data)
         })
     }
 

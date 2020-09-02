@@ -1,11 +1,11 @@
 ext {
     // Android
-    versionCode = 4
-    versionName = "3.0"
+    versionCode = 5
+    versionName = "4.0"
     minSdkVersion = 19
-    targetSdkVersion = 29
-    compileSdkVersion = 29
-    buildToolsVersion = "29.0.3"
+    targetSdkVersion = 30
+    compileSdkVersion = 30
+    buildToolsVersion = "30.0.2"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
     // Implementation
@@ -23,8 +23,6 @@ ext {
     okHttpVersion = '4.7.2'
     recyclerviewVersion = '1.1.0'
     retrofitVersion = '2.6.2'
-    rxAndroidVersion = '2.1.1'
-    rxJavaVersion = '2.2.19'
     timberVersion = '4.7.1'
 
     androidAppCompat = "androidx.appcompat:appcompat:$androidXVersion"
@@ -53,8 +51,6 @@ ext {
     retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
     retrofitConverterGson = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     retrofitRxJava = "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
-    rxAndroid = "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
-    rxJava = "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
     timber = "com.jakewharton.timber:timber:$timberVersion"
 
     // Testing

@@ -52,6 +52,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api project(':data')
+    implementation project(':domain')
 
     implementation rootProject.ext.androidAppCompat
     implementation rootProject.ext.androidConstraintLayout
@@ -74,8 +76,6 @@ dependencies {
     implementation rootProject.ext.retrofit
     implementation rootProject.ext.retrofitConverterGson
     implementation rootProject.ext.retrofitRxJava
-    implementation rootProject.ext.rxAndroid
-    implementation rootProject.ext.rxJava
     implementation rootProject.ext.timber
 
     kapt rootProject.ext.dataBindingCompiler
@@ -86,11 +86,9 @@ dependencies {
 
     testImplementation rootProject.ext.androidXTestCore
     testImplementation rootProject.ext.archCore
+    testImplementation rootProject.ext.coroutinesTest
     testImplementation rootProject.ext.jUnit
     testImplementation rootProject.ext.koinTest
     testImplementation rootProject.ext.mockk
     testImplementation rootProject.ext.robolectric
-
-    implementation project(':data')
-    implementation project(':domain')
 }
