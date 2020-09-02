@@ -60,6 +60,7 @@ dependencies {
     implementation rootProject.ext.androidCoreKtx
     implementation rootProject.ext.androidMaterial
     implementation rootProject.ext.androidRecyclerView
+    implementation rootProject.ext.archCoreCommon
     implementation rootProject.ext.coroutinesAndroid
     implementation rootProject.ext.coroutinesCore
     implementation rootProject.ext.design
@@ -85,7 +86,7 @@ dependencies {
     compileOnly rootProject.ext.jsr250
 
     testImplementation rootProject.ext.androidXTestCore
-    testImplementation rootProject.ext.archCore
+    testImplementation rootProject.ext.archCoreTesting
     testImplementation rootProject.ext.coroutinesTest
     testImplementation rootProject.ext.jUnit
     testImplementation rootProject.ext.koinTest

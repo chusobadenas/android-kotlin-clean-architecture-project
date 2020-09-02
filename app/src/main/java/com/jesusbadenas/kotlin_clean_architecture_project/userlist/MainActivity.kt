@@ -1,21 +1,37 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.userlist
 
 import android.os.Bundle
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import com.jesusbadenas.kotlin_clean_architecture_project.R
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import com.jesusbadenas.kotlin_clean_architecture_project.databinding.ActivityMainBinding
+import com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.MainViewModel
+import org.koin.android.ext.android.inject
 
 /**
  * Main application screen. This is the app entry point.
  */
 class MainActivity : BaseActivity() {
 
+    private val mainVM: MainViewModel by inject()
+
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        btn_LoadData.setOnClickListener {
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
+        binding.viewModel = mainVM
+
+        subscribe()
+    }
+
+    private fun subscribe() {
+        mainVM.loadAction.observe(this, Observer {
             navigateToUserList()
-        }
+        })
     }
 
     private fun navigateToUserList() {

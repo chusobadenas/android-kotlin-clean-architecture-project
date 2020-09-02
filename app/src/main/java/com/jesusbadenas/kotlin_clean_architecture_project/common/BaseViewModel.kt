@@ -12,6 +12,8 @@ abstract class BaseViewModel : ViewModel() {
     val retryVisibility = MutableLiveData<Int>()
     val uiError = MutableLiveData<UIError>()
 
+    val retryAction = LiveEvent<Nothing>()
+
     fun showLoading(loadingVisibility: Int) {
         this.loadingVisibility.value = loadingVisibility
         this.containerVisibility.value =
@@ -31,5 +33,9 @@ abstract class BaseViewModel : ViewModel() {
         action: DialogInterface.OnClickListener?
     ) {
         uiError.value = UIError(throwable, logMessage, errorMsgId, action)
+    }
+
+    fun onRetryButtonClick() {
+        retryAction.call()
     }
 }

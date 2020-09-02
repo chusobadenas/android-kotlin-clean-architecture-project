@@ -12,7 +12,6 @@ import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseFragment
 import com.jesusbadenas.kotlin_clean_architecture_project.common.UIUtils
 import com.jesusbadenas.kotlin_clean_architecture_project.databinding.FragmentUserDetailsBinding
 import com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.UserDetailsViewModel
-import kotlinx.android.synthetic.main.view_retry.*
 import org.koin.android.ext.android.inject
 
 /**
@@ -21,6 +20,7 @@ import org.koin.android.ext.android.inject
 class UserDetailsFragment : BaseFragment() {
 
     private val userDetailsVM: UserDetailsViewModel by inject()
+
     private lateinit var binding: FragmentUserDetailsBinding
 
     override fun onAttachToContext(context: Context) {
@@ -46,14 +46,6 @@ class UserDetailsFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        // Retry button
-        bt_retry.setOnClickListener {
-            loadUserDetails()
-        }
-    }
-
     override fun onStart() {
         super.onStart()
         loadUserDetails()
@@ -63,6 +55,11 @@ class UserDetailsFragment : BaseFragment() {
         // Error
         userDetailsVM.uiError.observe(viewLifecycleOwner, Observer { error ->
             UIUtils.showError(context(), error)
+        })
+
+        // Retry
+        userDetailsVM.retryAction.observe(viewLifecycleOwner, Observer {
+            loadUserDetails()
         })
 
         // User details

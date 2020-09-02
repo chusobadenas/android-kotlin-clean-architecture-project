@@ -36,7 +36,7 @@ dependencies {
     implementation rootProject.ext.koinAndroid
     implementation rootProject.ext.kotlin
 
-    testImplementation rootProject.ext.archCore
+    testImplementation rootProject.ext.archCoreTesting
     testImplementation rootProject.ext.coroutinesTest
     testImplementation rootProject.ext.jUnit
     testImplementation rootProject.ext.mockk

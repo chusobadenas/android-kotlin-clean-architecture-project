@@ -14,7 +14,6 @@ import com.jesusbadenas.kotlin_clean_architecture_project.databinding.FragmentUs
 import com.jesusbadenas.kotlin_clean_architecture_project.entities.User
 import com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.UserListViewModel
 import kotlinx.android.synthetic.main.fragment_user_list.*
-import kotlinx.android.synthetic.main.view_retry.*
 import org.koin.android.ext.android.inject
 
 /**
@@ -65,12 +64,7 @@ class UserListFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        // Initialize list
         setupRecyclerView()
-        // Retry button
-        bt_retry.setOnClickListener {
-            loadUserList()
-        }
     }
 
     override fun onStart() {
@@ -84,7 +78,7 @@ class UserListFragment : BaseFragment() {
     }
 
     private fun setupRecyclerView() {
-        usersAdapter.setOnItemClickListener(onItemClickListener)
+        usersAdapter.onItemClickListener = onItemClickListener
         rv_users.apply {
             layoutManager = UsersLayoutManager(context())
             adapter = usersAdapter
@@ -102,9 +96,14 @@ class UserListFragment : BaseFragment() {
             UIUtils.showError(context(), error)
         })
 
+        // Retry
+        userListVM.retryAction.observe(viewLifecycleOwner, Observer {
+            loadUserList()
+        })
+
         // User list
         userListVM.userList.observe(viewLifecycleOwner, Observer { users ->
-            usersAdapter.setUsers(users)
+            users.let(usersAdapter::submitList)
         })
     }
 

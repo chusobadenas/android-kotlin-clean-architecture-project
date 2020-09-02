@@ -21,13 +21,13 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class UserListViewModelTest {
 
-    private lateinit var userListVM: UserListViewModel
-
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
     @MockK(relaxed = true)
     private lateinit var userRepository: UserRepository
+
+    private lateinit var userListVM: UserListViewModel
 
     @Before
     fun setUp() {
