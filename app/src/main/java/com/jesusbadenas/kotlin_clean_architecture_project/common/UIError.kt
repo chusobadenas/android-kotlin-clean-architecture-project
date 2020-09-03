@@ -5,6 +5,6 @@ import android.content.DialogInterface
 data class UIError(
     val throwable: Throwable,
     val logMessage: String,
-    var errorMsgId: Int?,
-    var action: DialogInterface.OnClickListener?
+    var errorMsgId: Int? = null,
+    var action: DialogInterface.OnClickListener? = null
 )

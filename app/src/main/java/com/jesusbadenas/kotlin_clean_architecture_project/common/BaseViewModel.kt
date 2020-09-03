@@ -29,13 +29,17 @@ abstract class BaseViewModel : ViewModel() {
     fun showError(
         throwable: Throwable,
         logMessage: String,
-        errorMsgId: Int?,
-        action: DialogInterface.OnClickListener?
+        errorMsgId: Int? = null,
+        action: DialogInterface.OnClickListener? = null
     ) {
+        showLoading(View.GONE)
+        showRetry(View.VISIBLE)
         uiError.value = UIError(throwable, logMessage, errorMsgId, action)
     }
 
     fun onRetryButtonClick() {
+        showRetry(View.GONE)
+        showLoading(View.VISIBLE)
         retryAction.call()
     }
 }

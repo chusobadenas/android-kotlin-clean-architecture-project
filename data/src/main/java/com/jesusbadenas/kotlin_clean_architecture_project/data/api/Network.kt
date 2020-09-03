@@ -23,27 +23,37 @@ object Network {
 
         // Enable logging
         if (BuildConfig.DEBUG) {
-            val interceptor = HttpLoggingInterceptor()
-            interceptor.level = HttpLoggingInterceptor.Level.BASIC
+            val interceptor = HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BASIC
+            }
             clientBuilder.addInterceptor(interceptor)
         }
 
-        return clientBuilder
-            .connectTimeout(CONNECT_TIMEOUT.toLong(), TimeUnit.MILLISECONDS)
-            .readTimeout(READ_TIMEOUT.toLong(), TimeUnit.MILLISECONDS)
-            .writeTimeout(WRITE_TIMEOUT.toLong(), TimeUnit.MILLISECONDS)
-            .build()
+        // Interceptors
+        clientBuilder.apply {
+            addInterceptor(Interceptors.internalServerError())
+            addInterceptor(Interceptors.networkError())
+        }
+
+        // Timeouts
+        return clientBuilder.apply {
+            connectTimeout(CONNECT_TIMEOUT.toLong(), TimeUnit.MILLISECONDS)
+            readTimeout(READ_TIMEOUT.toLong(), TimeUnit.MILLISECONDS)
+            writeTimeout(WRITE_TIMEOUT.toLong(), TimeUnit.MILLISECONDS)
+        }.build()
     }
 
     fun newAPIService(): APIService {
-        val gson = GsonBuilder()
-            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-            .create()
-        val retrofit = Retrofit.Builder()
-            .baseUrl(API_BASE_URL)
-            .client(createHttpClient())
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
+        val gson = GsonBuilder().apply {
+            setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        }.create()
+
+        val retrofit = Retrofit.Builder().apply {
+            baseUrl(API_BASE_URL)
+            client(createHttpClient())
+            addConverterFactory(GsonConverterFactory.create(gson))
+        }.build()
+
         return retrofit.create(APIService::class.java)
     }
 }

@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import com.jesusbadenas.kotlin_clean_architecture_project.R
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseFragment
 import com.jesusbadenas.kotlin_clean_architecture_project.common.UIUtils
@@ -51,24 +50,24 @@ class UserDetailsFragment : BaseFragment() {
     }
 
     private fun subscribe() {
-        // TODO: Error
-        userDetailsVM.uiError.observe(viewLifecycleOwner, Observer { error ->
-            // showError(exception, "Error loading user details", null, null)
+        userDetailsVM.uiError.observe(viewLifecycleOwner) { error ->
             UIUtils.showError(context(), error)
-        })
+        }
 
         // Retry
-        userDetailsVM.retryAction.observe(viewLifecycleOwner, Observer {
+        userDetailsVM.retryAction.observe(viewLifecycleOwner) {
             loadUserDetails(userDetailsVM.user.value)
-        })
+        }
 
         // User details
-        userDetailsVM.user.observe(viewLifecycleOwner, Observer { user ->
+        userDetailsVM.user.observe(viewLifecycleOwner) { user ->
             loadUserDetails(user)
-        })
+        }
     }
 
     private fun loadUserDetails(user: User?) {
+        userDetailsVM.showLoading(View.GONE)
+        userDetailsVM.showRetry(View.GONE)
         binding.user = user
     }
 }

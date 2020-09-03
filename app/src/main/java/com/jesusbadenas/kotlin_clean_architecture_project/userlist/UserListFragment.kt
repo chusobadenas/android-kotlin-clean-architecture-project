@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import com.jesusbadenas.kotlin_clean_architecture_project.R
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseFragment
 import com.jesusbadenas.kotlin_clean_architecture_project.common.UIUtils
@@ -85,24 +84,27 @@ class UserListFragment : BaseFragment(), UserAdapter.OnItemClickListener {
     }
 
     private fun subscribe() {
-        // TODO: Error
-        userListVM.uiError.observe(viewLifecycleOwner, Observer { error ->
-            //showError(exception, "Error loading user list", null, null)
+        userListVM.uiError.observe(viewLifecycleOwner) { error ->
             UIUtils.showError(context(), error)
-        })
+        }
 
         // Retry
-        userListVM.retryAction.observe(viewLifecycleOwner, Observer {
+        userListVM.retryAction.observe(viewLifecycleOwner) {
             loadUserList(userListVM.userList.value)
-        })
+        }
 
         // User list
-        userListVM.userList.observe(viewLifecycleOwner, Observer { users ->
+        userListVM.userList.observe(viewLifecycleOwner) { users ->
             loadUserList(users)
-        })
+        }
     }
 
     private fun loadUserList(users: List<User>?) {
+        userListVM.showLoading(View.GONE)
+        userListVM.showRetry(View.GONE)
+        if (swipe_container.isRefreshing) {
+            swipe_container.isRefreshing = false
+        }
         usersAdapter.submitList(users)
     }
 }

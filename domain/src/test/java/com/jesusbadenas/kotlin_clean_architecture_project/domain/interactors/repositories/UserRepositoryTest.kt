@@ -2,9 +2,10 @@ package com.jesusbadenas.kotlin_clean_architecture_project.domain.interactors.re
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.jesusbadenas.kotlin_clean_architecture_project.data.api.APIService
+import com.jesusbadenas.kotlin_clean_architecture_project.data.common.Resource
 import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories.UserRepository
-import com.jesusbadenas.kotlin_clean_architecture_project.test.MainCoroutineRule
+import com.jesusbadenas.kotlin_clean_architecture_project.test.CoroutinesTestRule
 import com.jesusbadenas.kotlin_clean_architecture_project.test.getOrAwaitValue
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -30,7 +31,7 @@ class UserRepositoryTest {
     val rule = InstantTaskExecutorRule()
 
     @get:Rule
-    val coroutineRule = MainCoroutineRule()
+    val coroutineRule = CoroutinesTestRule()
 
     @MockK
     lateinit var apiService: APIService
@@ -47,7 +48,8 @@ class UserRepositoryTest {
 
         coEvery { apiService.userDataList() } returns userDataList
 
-        val userList = userRepository.users().getOrAwaitValue()
+        val liveData = userRepository.users().getOrAwaitValue()
+        val userList = (liveData as Resource.Success).data!!
 
         assertTrue(userList.isNotEmpty())
         assertSame(userList.size, 1)
@@ -58,7 +60,8 @@ class UserRepositoryTest {
     fun testGetUserById() {
         coEvery { apiService.userDataById(USER_ID) } returns userData
 
-        val user = userRepository.user(USER_ID).getOrAwaitValue()
+        val liveData = userRepository.user(USER_ID).getOrAwaitValue()
+        val user = (liveData as Resource.Success).data!!
 
         assertSame(user.userId, USER_ID)
     }
