@@ -1,18 +1,18 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.viewmodel
 
-import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
 import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories.UserRepository
 import com.jesusbadenas.kotlin_clean_architecture_project.entities.mappers.UserDataMapper
+import com.jesusbadenas.kotlin_clean_architecture_project.test.MainCoroutineRule
+import com.jesusbadenas.kotlin_clean_architecture_project.test.getOrAwaitValue
 import io.mockk.MockKAnnotations
-import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -20,30 +20,35 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class UserDetailsViewModelTest {
 
+    companion object {
+        private const val USER_ID = 1
+    }
+
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
-    @MockK(relaxed = true)
-    private lateinit var userRepository: UserRepository
+    @get:Rule
+    val coroutineRule = MainCoroutineRule()
+
+    @MockK
+    lateinit var userRepository: UserRepository
 
     private lateinit var userDetailsVM: UserDetailsViewModel
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        userDetailsVM = UserDetailsViewModel(userRepository, UserDataMapper())
+        userDetailsVM = UserDetailsViewModel(USER_ID, userRepository, UserDataMapper())
     }
 
     @Test
-    fun testLoadUserDetailsSuccess() = runBlockingTest {
-        val userData = mockk<UserData>()
-        every { userData.userId } returns 1
-        coEvery { userRepository.user(1) } returns userData
+    fun testLoadUserDetailsSuccess() {
+        val userData = UserData(USER_ID)
+        every { userRepository.user(USER_ID) } returns MutableLiveData(userData)
 
-        userDetailsVM.loadUserDetails(1)
+        val user = userDetailsVM.user.getOrAwaitValue()
 
-        assertEquals(userDetailsVM.retryVisibility.value, View.GONE)
-        assertEquals(userDetailsVM.loadingVisibility.value, View.VISIBLE)
-        assertEquals(userDetailsVM.user.value?.userId, 1)
+        assertNotNull(user)
+        assertEquals(user.userId, USER_ID)
     }
 }

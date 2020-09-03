@@ -15,27 +15,26 @@ import com.jesusbadenas.kotlin_clean_architecture_project.entities.User
 import com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.UserListViewModel
 import kotlinx.android.synthetic.main.fragment_user_list.*
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Fragment that shows a list of Users.
  */
-class UserListFragment : BaseFragment() {
+class UserListFragment : BaseFragment(), UserAdapter.OnItemClickListener {
 
     private val usersAdapter: UserAdapter by inject()
-    private val userListVM: UserListViewModel by inject()
+    private val userListVM: UserListViewModel by viewModel()
 
     private lateinit var binding: FragmentUserListBinding
 
-    private var userListListener: UserListListener? = null
-
-    private val onItemClickListener = object : UserAdapter.OnItemClickListener {
-        override fun onUserItemClicked(user: User) {
-            userListListener?.onUserClicked(user)
-        }
-    }
-
     interface UserListListener {
         fun onUserClicked(user: User)
+    }
+
+    private var userListListener: UserListListener? = null
+
+    override fun onUserItemClicked(user: User) {
+        userListListener?.onUserClicked(user)
     }
 
     override fun onAttachToContext(context: Context) {
@@ -67,18 +66,13 @@ class UserListFragment : BaseFragment() {
         setupRecyclerView()
     }
 
-    override fun onStart() {
-        super.onStart()
-        loadUserList()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         rv_users.adapter = null
     }
 
     private fun setupRecyclerView() {
-        usersAdapter.onItemClickListener = onItemClickListener
+        usersAdapter.onItemClickListener = this
         rv_users.apply {
             layoutManager = UsersLayoutManager(context())
             adapter = usersAdapter
@@ -86,28 +80,29 @@ class UserListFragment : BaseFragment() {
 
         swipe_container.setColorSchemeResources(R.color.primary)
         swipe_container.setOnRefreshListener {
-            loadUserList()
+            loadUserList(userListVM.userList.value)
         }
     }
 
     private fun subscribe() {
-        // Error
+        // TODO: Error
         userListVM.uiError.observe(viewLifecycleOwner, Observer { error ->
+            //showError(exception, "Error loading user list", null, null)
             UIUtils.showError(context(), error)
         })
 
         // Retry
         userListVM.retryAction.observe(viewLifecycleOwner, Observer {
-            loadUserList()
+            loadUserList(userListVM.userList.value)
         })
 
         // User list
         userListVM.userList.observe(viewLifecycleOwner, Observer { users ->
-            users.let(usersAdapter::submitList)
+            loadUserList(users)
         })
     }
 
-    private fun loadUserList() {
-        userListVM.loadUserList()
+    private fun loadUserList(users: List<User>?) {
+        usersAdapter.submitList(users)
     }
 }

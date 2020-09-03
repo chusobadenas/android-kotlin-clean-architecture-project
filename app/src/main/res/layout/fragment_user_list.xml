@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="com.jesusbadenas.kotlin_clean_architecture_project.common.BaseViewModel" />
+            type="com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.UserListViewModel" />
     </data>
 
     <RelativeLayout

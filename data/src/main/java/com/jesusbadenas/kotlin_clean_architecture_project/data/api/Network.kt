@@ -5,7 +5,6 @@ import com.jesusbadenas.kotlin_clean_architecture_project.data.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
@@ -44,7 +43,6 @@ object Network {
             .baseUrl(API_BASE_URL)
             .client(createHttpClient())
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
         return retrofit.create(APIService::class.java)
     }

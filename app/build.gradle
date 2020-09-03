@@ -14,6 +14,7 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
         testInstrumentationRunner rootProject.ext.testInstrumentationRunner
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -54,6 +55,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api project(':data')
     implementation project(':domain')
+    implementation project(':test')
 
     implementation rootProject.ext.androidAppCompat
     implementation rootProject.ext.androidConstraintLayout
@@ -74,9 +76,9 @@ dependencies {
     implementation rootProject.ext.lifeCycleLiveDataKtx
     implementation rootProject.ext.lifeCycleViewModelKtx
     implementation rootProject.ext.loggingInterceptor
+    implementation rootProject.ext.multidex
     implementation rootProject.ext.retrofit
     implementation rootProject.ext.retrofitConverterGson
-    implementation rootProject.ext.retrofitRxJava
     implementation rootProject.ext.timber
 
     kapt rootProject.ext.dataBindingCompiler

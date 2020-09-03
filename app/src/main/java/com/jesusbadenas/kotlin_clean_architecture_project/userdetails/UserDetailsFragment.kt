@@ -11,15 +11,19 @@ import com.jesusbadenas.kotlin_clean_architecture_project.R
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseFragment
 import com.jesusbadenas.kotlin_clean_architecture_project.common.UIUtils
 import com.jesusbadenas.kotlin_clean_architecture_project.databinding.FragmentUserDetailsBinding
+import com.jesusbadenas.kotlin_clean_architecture_project.entities.User
 import com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.UserDetailsViewModel
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 /**
  * Fragment that shows details of a certain User.
  */
 class UserDetailsFragment : BaseFragment() {
 
-    private val userDetailsVM: UserDetailsViewModel by inject()
+    private val userDetailsVM: UserDetailsViewModel by viewModel {
+        parametersOf((activity as UserDetailsActivity).userId)
+    }
 
     private lateinit var binding: FragmentUserDetailsBinding
 
@@ -46,30 +50,25 @@ class UserDetailsFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onStart() {
-        super.onStart()
-        loadUserDetails()
-    }
-
     private fun subscribe() {
-        // Error
+        // TODO: Error
         userDetailsVM.uiError.observe(viewLifecycleOwner, Observer { error ->
+            // showError(exception, "Error loading user details", null, null)
             UIUtils.showError(context(), error)
         })
 
         // Retry
         userDetailsVM.retryAction.observe(viewLifecycleOwner, Observer {
-            loadUserDetails()
+            loadUserDetails(userDetailsVM.user.value)
         })
 
         // User details
         userDetailsVM.user.observe(viewLifecycleOwner, Observer { user ->
-            binding.user = user
+            loadUserDetails(user)
         })
     }
 
-    private fun loadUserDetails() {
-        val userId = (activity as UserDetailsActivity).userId
-        userDetailsVM.loadUserDetails(userId)
+    private fun loadUserDetails(user: User?) {
+        binding.user = user
     }
 }

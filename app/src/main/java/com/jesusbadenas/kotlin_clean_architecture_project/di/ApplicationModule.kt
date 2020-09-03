@@ -19,6 +19,6 @@ val appModule = module {
     fragment { UserDetailsFragment() }
     single { Navigator() }
     viewModel { MainViewModel() }
-    viewModel { UserDetailsViewModel(get(), get()) }
+    viewModel { (id: Int) -> UserDetailsViewModel(id, get(), get()) }
     viewModel { UserListViewModel(get(), get()) }
 }

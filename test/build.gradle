@@ -31,13 +31,11 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation rootProject.ext.androidAppCompat
-    implementation rootProject.ext.coroutinesCore
-    implementation rootProject.ext.koinAndroid
+    implementation rootProject.ext.archCoreTesting
+    implementation rootProject.ext.coroutinesTest
+    implementation rootProject.ext.koinTest
     implementation rootProject.ext.kotlin
-    implementation rootProject.ext.loggingInterceptor
-    implementation rootProject.ext.okHttp
-    implementation rootProject.ext.retrofit
-    implementation rootProject.ext.retrofitConverterGson
+    implementation rootProject.ext.lifeCycleLiveDataKtx
 
     testImplementation rootProject.ext.jUnit
     testImplementation rootProject.ext.mockk

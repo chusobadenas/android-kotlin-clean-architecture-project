@@ -7,14 +7,14 @@ import com.jesusbadenas.kotlin_clean_architecture_project.R
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseActivity
 import com.jesusbadenas.kotlin_clean_architecture_project.databinding.ActivityMainBinding
 import com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.MainViewModel
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Main application screen. This is the app entry point.
  */
 class MainActivity : BaseActivity() {
 
-    private val mainVM: MainViewModel by inject()
+    private val mainVM: MainViewModel by viewModel()
 
     private lateinit var binding: ActivityMainBinding
 

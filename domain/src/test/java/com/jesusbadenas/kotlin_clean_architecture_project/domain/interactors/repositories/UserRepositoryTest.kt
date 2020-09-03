@@ -4,11 +4,12 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.jesusbadenas.kotlin_clean_architecture_project.data.api.APIService
 import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories.UserRepository
+import com.jesusbadenas.kotlin_clean_architecture_project.test.MainCoroutineRule
+import com.jesusbadenas.kotlin_clean_architecture_project.test.getOrAwaitValue
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -28,6 +29,9 @@ class UserRepositoryTest {
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
+    @get:Rule
+    val coroutineRule = MainCoroutineRule()
+
     @MockK
     lateinit var apiService: APIService
 
@@ -38,12 +42,12 @@ class UserRepositoryTest {
     }
 
     @Test
-    fun testGetUsers() = runBlockingTest {
+    fun testGetUsers() {
         val userDataList = arrayListOf(userData)
 
         coEvery { apiService.userDataList() } returns userDataList
 
-        val userList = userRepository.users()
+        val userList = userRepository.users().getOrAwaitValue()
 
         assertTrue(userList.isNotEmpty())
         assertSame(userList.size, 1)
@@ -51,10 +55,10 @@ class UserRepositoryTest {
     }
 
     @Test
-    fun testGetUserById() = runBlockingTest {
+    fun testGetUserById() {
         coEvery { apiService.userDataById(USER_ID) } returns userData
 
-        val user = userRepository.user(USER_ID)
+        val user = userRepository.user(USER_ID).getOrAwaitValue()
 
         assertSame(user.userId, USER_ID)
     }
