@@ -2,7 +2,7 @@ package com.jesusbadenas.kotlin_clean_architecture_project.data.api
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
+import android.net.NetworkCapabilities
 import com.jesusbadenas.kotlin_clean_architecture_project.data.api.exception.InternalServerErrorException
 import com.jesusbadenas.kotlin_clean_architecture_project.data.api.exception.NetworkException
 import okhttp3.Interceptor
@@ -26,9 +26,19 @@ object Interceptors : KoinComponent {
     }
 
     private fun isConnected(): Boolean {
+        var result = false
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo: NetworkInfo? = cm.activeNetworkInfo
-        return networkInfo?.isConnected == true
+        for (network in cm.allNetworks) {
+            cm.getNetworkCapabilities(network)?.let {
+                if (it.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                    it.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                    it.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+                ) {
+                    result = true
+                }
+            }
+        }
+        return result
     }
 
     fun networkError() = Interceptor { chain ->

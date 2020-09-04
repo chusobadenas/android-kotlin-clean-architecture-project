@@ -88,11 +88,6 @@ class UserListFragment : BaseFragment(), UserAdapter.OnItemClickListener {
             UIUtils.showError(context(), error)
         }
 
-        // Retry
-        userListVM.retryAction.observe(viewLifecycleOwner) {
-            loadUserList(userListVM.userList.value)
-        }
-
         // User list
         userListVM.userList.observe(viewLifecycleOwner) { users ->
             loadUserList(users)
@@ -101,7 +96,7 @@ class UserListFragment : BaseFragment(), UserAdapter.OnItemClickListener {
 
     private fun loadUserList(users: List<User>?) {
         userListVM.showLoading(View.GONE)
-        userListVM.showRetry(View.GONE)
+        userListVM.showRetry(userListVM.retryVisibility.value!!)
         if (swipe_container.isRefreshing) {
             swipe_container.isRefreshing = false
         }

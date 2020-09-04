@@ -1,10 +1,10 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.viewmodel
 
-import android.view.View
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.MediatorLiveData
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseViewModel
 import com.jesusbadenas.kotlin_clean_architecture_project.data.common.Resource
+import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories.UserRepository
 import com.jesusbadenas.kotlin_clean_architecture_project.entities.User
 import com.jesusbadenas.kotlin_clean_architecture_project.entities.mappers.UserDataMapper
@@ -14,21 +14,26 @@ class UserListViewModel(
     private val userDataMapper: UserDataMapper
 ) : BaseViewModel() {
 
+    private var userListRepositoryValue: LiveData<Resource<List<UserData>>> = userRepository.users()
+    val userList = MediatorLiveData<List<User>>()
+
     init {
-        showLoading(View.VISIBLE)
-        showRetry(View.GONE)
+        userList.addSource(userListRepositoryValue) { userListDataResource ->
+            updateUserList(userListDataResource)
+        }
+        userList.addSource(retryAction) {
+            userListRepositoryValue = userRepository.users()
+        }
     }
 
-    val userList: LiveData<List<User>> =
-        Transformations.map(userRepository.users()) { userDataListResource ->
-            when (userDataListResource) {
-                is Resource.Error -> {
-                    showError(userDataListResource.throwable, "Error loading user list")
-                    emptyList()
-                }
-                is Resource.Success -> {
-                    userDataMapper.mapFrom(userDataListResource.data!!)
-                }
+    private fun updateUserList(userDataListResource: Resource<List<UserData>>?) {
+        when (userDataListResource) {
+            is Resource.Error -> {
+                showError(userDataListResource.throwable, "Error loading user list")
+            }
+            is Resource.Success -> {
+                userList.value = userDataMapper.mapFrom(userDataListResource.data!!)
             }
         }
+    }
 }

@@ -14,6 +14,11 @@ abstract class BaseViewModel : ViewModel() {
 
     val retryAction = LiveEvent<Nothing>()
 
+    init {
+        showLoading(View.VISIBLE)
+        showRetry(View.GONE)
+    }
+
     fun showLoading(loadingVisibility: Int) {
         this.loadingVisibility.value = loadingVisibility
         this.containerVisibility.value =

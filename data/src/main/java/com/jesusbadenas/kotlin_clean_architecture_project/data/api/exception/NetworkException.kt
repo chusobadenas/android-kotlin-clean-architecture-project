@@ -1,3 +1,5 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.data.api.exception
 
-class NetworkException: Exception()
+import java.io.IOException
+
+class NetworkException: IOException()

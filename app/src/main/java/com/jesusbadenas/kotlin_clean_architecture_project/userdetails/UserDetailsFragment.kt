@@ -54,11 +54,6 @@ class UserDetailsFragment : BaseFragment() {
             UIUtils.showError(context(), error)
         }
 
-        // Retry
-        userDetailsVM.retryAction.observe(viewLifecycleOwner) {
-            loadUserDetails(userDetailsVM.user.value)
-        }
-
         // User details
         userDetailsVM.user.observe(viewLifecycleOwner) { user ->
             loadUserDetails(user)
@@ -67,7 +62,7 @@ class UserDetailsFragment : BaseFragment() {
 
     private fun loadUserDetails(user: User?) {
         userDetailsVM.showLoading(View.GONE)
-        userDetailsVM.showRetry(View.GONE)
+        userDetailsVM.showRetry(userDetailsVM.retryVisibility.value!!)
         binding.user = user
     }
 }
