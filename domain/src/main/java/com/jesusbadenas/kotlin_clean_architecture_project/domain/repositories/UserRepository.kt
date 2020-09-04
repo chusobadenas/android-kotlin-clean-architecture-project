@@ -1,35 +1,33 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
 import com.jesusbadenas.kotlin_clean_architecture_project.data.api.APIService
 import com.jesusbadenas.kotlin_clean_architecture_project.data.common.Resource
 import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * [UserRepository] for retrieving user data.
  */
-class UserRepository(
-    private val apiService: APIService
-) {
-    fun users(): LiveData<Resource<List<UserData>>> =
-        liveData(Dispatchers.IO) {
+class UserRepository(private val apiService: APIService) {
+
+    suspend fun users(): Resource<List<UserData>> =
+        withContext(Dispatchers.IO) {
             try {
                 val list: List<UserData> = apiService.userDataList()
-                emit(Resource.Success(list))
+                Resource.Success(list)
             } catch (exception: Exception) {
-                emit(Resource.Error(exception))
+                Resource.Error(exception)
             }
         }
 
-    fun user(userId: Int): LiveData<Resource<UserData>> =
-        liveData(Dispatchers.IO) {
+    suspend fun user(userId: Int): Resource<UserData> =
+        withContext(Dispatchers.IO) {
             try {
                 val user: UserData = apiService.userDataById(userId)
-                emit(Resource.Success(user))
+                Resource.Success(user)
             } catch (exception: Exception) {
-                emit(Resource.Error(exception))
+                Resource.Error(exception)
             }
         }
 }

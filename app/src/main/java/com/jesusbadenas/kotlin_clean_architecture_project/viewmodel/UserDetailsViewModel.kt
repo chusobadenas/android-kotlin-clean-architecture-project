@@ -1,29 +1,31 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseViewModel
 import com.jesusbadenas.kotlin_clean_architecture_project.data.common.Resource
 import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories.UserRepository
 import com.jesusbadenas.kotlin_clean_architecture_project.entities.User
 import com.jesusbadenas.kotlin_clean_architecture_project.entities.mappers.UserDataMapper
+import kotlinx.coroutines.launch
 
 class UserDetailsViewModel(
-    userId: Int,
-    userRepository: UserRepository,
+    private val userId: Int,
+    private val userRepository: UserRepository,
     private val userDataMapper: UserDataMapper
 ) : BaseViewModel() {
 
-    private var userRepositoryValue: LiveData<Resource<UserData>> = userRepository.user(userId)
-    val user = MediatorLiveData<User>()
+    val user = MutableLiveData<User>()
 
     init {
-        user.addSource(userRepositoryValue) { userDataResource ->
+        loadUser()
+    }
+
+    fun loadUser() {
+        viewModelScope.launch {
+            val userDataResource = userRepository.user(userId)
             updateUser(userDataResource)
-        }
-        user.addSource(retryAction) {
-            userRepositoryValue = userRepository.user(userId)
         }
     }
 

@@ -79,7 +79,7 @@ class UserListFragment : BaseFragment(), UserAdapter.OnItemClickListener {
 
         swipe_container.setColorSchemeResources(R.color.primary)
         swipe_container.setOnRefreshListener {
-            loadUserList(userListVM.userList.value)
+            userListVM.loadUserList()
         }
     }
 
@@ -88,7 +88,10 @@ class UserListFragment : BaseFragment(), UserAdapter.OnItemClickListener {
             UIUtils.showError(context(), error)
         }
 
-        // User list
+        userListVM.retryAction.observe(viewLifecycleOwner) {
+            userListVM.loadUserList()
+        }
+
         userListVM.userList.observe(viewLifecycleOwner) { users ->
             loadUserList(users)
         }

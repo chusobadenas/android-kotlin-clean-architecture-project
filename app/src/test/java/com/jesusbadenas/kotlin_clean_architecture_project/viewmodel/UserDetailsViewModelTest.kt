@@ -1,7 +1,6 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
 import com.jesusbadenas.kotlin_clean_architecture_project.data.common.Resource
 import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories.UserRepository
@@ -9,7 +8,7 @@ import com.jesusbadenas.kotlin_clean_architecture_project.entities.mappers.UserD
 import com.jesusbadenas.kotlin_clean_architecture_project.test.CoroutinesTestRule
 import com.jesusbadenas.kotlin_clean_architecture_project.test.getOrAwaitValue
 import io.mockk.MockKAnnotations
-import io.mockk.every
+import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert.*
@@ -44,7 +43,7 @@ class UserDetailsViewModelTest {
     @Test
     fun testLoadUserDetailsError() {
         val exception = Exception()
-        every { userRepository.user(USER_ID) } returns MutableLiveData(Resource.Error(exception))
+        coEvery { userRepository.user(USER_ID) } returns Resource.Error(exception)
 
         val user = userDetailsVM.user.getOrAwaitValue()
 
@@ -54,7 +53,7 @@ class UserDetailsViewModelTest {
     @Test
     fun testLoadUserDetailsSuccess() {
         val userData = UserData(USER_ID)
-        every { userRepository.user(USER_ID) } returns MutableLiveData(Resource.Success(userData))
+        coEvery { userRepository.user(USER_ID) } returns Resource.Success(userData)
 
         val user = userDetailsVM.user.getOrAwaitValue()
 

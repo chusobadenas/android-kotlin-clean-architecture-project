@@ -2,7 +2,6 @@ package com.jesusbadenas.kotlin_clean_architecture_project.userlist
 
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import com.jesusbadenas.kotlin_clean_architecture_project.R
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseActivity
 import com.jesusbadenas.kotlin_clean_architecture_project.databinding.ActivityMainBinding
@@ -29,9 +28,9 @@ class MainActivity : BaseActivity() {
     }
 
     private fun subscribe() {
-        mainVM.loadAction.observe(this, Observer {
+        mainVM.loadAction.observe(this) {
             navigateToUserList()
-        })
+        }
     }
 
     private fun navigateToUserList() {

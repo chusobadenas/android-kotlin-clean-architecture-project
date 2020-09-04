@@ -54,6 +54,10 @@ class UserDetailsFragment : BaseFragment() {
             UIUtils.showError(context(), error)
         }
 
+        userDetailsVM.retryAction.observe(viewLifecycleOwner) {
+            userDetailsVM.loadUser()
+        }
+
         // User details
         userDetailsVM.user.observe(viewLifecycleOwner) { user ->
             loadUserDetails(user)

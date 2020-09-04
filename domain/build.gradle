@@ -41,7 +41,6 @@ dependencies {
     implementation rootProject.ext.coroutinesCore
     implementation rootProject.ext.koinAndroid
     implementation rootProject.ext.kotlin
-    implementation rootProject.ext.lifeCycleLiveDataKtx
 
     testImplementation rootProject.ext.archCoreTesting
     testImplementation rootProject.ext.coroutinesTest

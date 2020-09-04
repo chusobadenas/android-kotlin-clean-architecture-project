@@ -6,11 +6,11 @@ import com.jesusbadenas.kotlin_clean_architecture_project.data.common.Resource
 import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories.UserRepository
 import com.jesusbadenas.kotlin_clean_architecture_project.test.CoroutinesTestRule
-import com.jesusbadenas.kotlin_clean_architecture_project.test.getOrAwaitValue
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -48,8 +48,8 @@ class UserRepositoryTest {
 
         coEvery { apiService.userDataList() } returns userDataList
 
-        val liveData = userRepository.users().getOrAwaitValue()
-        val userList = (liveData as Resource.Success).data!!
+        val result = runBlocking { userRepository.users() }
+        val userList = (result as Resource.Success).data!!
 
         assertTrue(userList.isNotEmpty())
         assertSame(userList.size, 1)
@@ -60,8 +60,8 @@ class UserRepositoryTest {
     fun testGetUserById() {
         coEvery { apiService.userDataById(USER_ID) } returns userData
 
-        val liveData = userRepository.user(USER_ID).getOrAwaitValue()
-        val user = (liveData as Resource.Success).data!!
+        val result = runBlocking { userRepository.user(USER_ID) }
+        val user = (result as Resource.Success).data!!
 
         assertSame(user.userId, USER_ID)
     }
