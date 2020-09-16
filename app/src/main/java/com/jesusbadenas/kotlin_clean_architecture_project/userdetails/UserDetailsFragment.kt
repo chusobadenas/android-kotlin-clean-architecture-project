@@ -1,11 +1,11 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.userdetails
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.navArgs
 import com.jesusbadenas.kotlin_clean_architecture_project.R
 import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseFragment
 import com.jesusbadenas.kotlin_clean_architecture_project.common.UIUtils
@@ -20,15 +20,13 @@ import org.koin.core.parameter.parametersOf
  */
 class UserDetailsFragment : BaseFragment() {
 
+    private val navArgs: UserDetailsFragmentArgs by navArgs()
+
     private val userDetailsVM: UserDetailsViewModel by viewModel {
-        parametersOf((activity as UserDetailsActivity).userId)
+        parametersOf(navArgs.userId)
     }
 
     private lateinit var binding: FragmentUserDetailsBinding
-
-    override fun onAttachToContext(context: Context) {
-        // do nothing
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

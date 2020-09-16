@@ -52,6 +52,9 @@ ext {
     lifeCycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$livedataKtxVersion"
     loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
     multidex = "androidx.multidex:multidex:$multidexVersion"
+    navigationFeature = "androidx.navigation:navigation-dynamic-features-fragment:$NAV_VERSION"
+    navigationFragment = "androidx.navigation:navigation-fragment-ktx:$NAV_VERSION"
+    navigationUi = "androidx.navigation:navigation-ui-ktx:$NAV_VERSION"
     okHttp = "com.squareup.okhttp3:okhttp:$okHttpVersion"
     retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
     retrofitConverterGson = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
@@ -69,5 +72,6 @@ ext {
     jUnit = "junit:junit:$junitVersion"
     koinTest = "org.koin:koin-test:$koinAndroidVersion"
     mockk = "io.mockk:mockk:$mockkVersion"
+    navigationTest = "androidx.navigation:navigation-testing:$NAV_VERSION"
     robolectric = "org.robolectric:robolectric:$robolectricVersion"
 }

@@ -1,21 +1,22 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.navigation
 
-import android.content.Context
-import com.jesusbadenas.kotlin_clean_architecture_project.userdetails.UserDetailsActivity
-import com.jesusbadenas.kotlin_clean_architecture_project.userlist.UserListActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.jesusbadenas.kotlin_clean_architecture_project.main.MainFragmentDirections
+import com.jesusbadenas.kotlin_clean_architecture_project.userlist.UserListFragmentDirections
 
 /**
  * Class used to navigate through the application.
  */
 class Navigator {
 
-    fun navigateToUserList(context: Context) {
-        val intentToLaunch = UserListActivity.getCallingIntent(context)
-        context.startActivity(intentToLaunch)
+    fun navigateToUserList(fragment: Fragment) {
+        val directions = MainFragmentDirections.navigateToUserListFragment()
+        fragment.findNavController().navigate(directions)
     }
 
-    fun navigateToUserDetails(context: Context, userId: Int) {
-        val intentToLaunch = UserDetailsActivity.getCallingIntent(context, userId)
-        context.startActivity(intentToLaunch)
+    fun navigateToUserDetails(fragment: Fragment, userId: Int) {
+        val directions = UserListFragmentDirections.navigateToUserDetailsFragment(userId)
+        fragment.findNavController().navigate(directions)
     }
 }

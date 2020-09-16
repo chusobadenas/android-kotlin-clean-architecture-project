@@ -7,6 +7,7 @@ An Android boilerplate project using Clean Architecture and Kotlin.
 - [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)
 - [Data Binding](https://developer.android.com/topic/libraries/data-binding)
 - [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)
+- [Navigation Component](https://developer.android.com/guide/navigation/navigation-getting-started)
 
 - [Glide](https://github.com/bumptech/glide)
 - [Koin](https://insert-koin.io)

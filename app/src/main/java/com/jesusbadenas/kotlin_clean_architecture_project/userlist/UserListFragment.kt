@@ -1,6 +1,5 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.userlist
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,22 +24,6 @@ class UserListFragment : BaseFragment(), UserAdapter.OnItemClickListener {
     private val userListVM: UserListViewModel by viewModel()
 
     private lateinit var binding: FragmentUserListBinding
-
-    interface UserListListener {
-        fun onUserClicked(user: User)
-    }
-
-    private var userListListener: UserListListener? = null
-
-    override fun onUserItemClicked(user: User) {
-        userListListener?.onUserClicked(user)
-    }
-
-    override fun onAttachToContext(context: Context) {
-        if (context is UserListListener) {
-            userListListener = context
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -104,5 +87,9 @@ class UserListFragment : BaseFragment(), UserAdapter.OnItemClickListener {
             swipe_container.isRefreshing = false
         }
         usersAdapter.submitList(users)
+    }
+
+    override fun onUserItemClicked(user: User) {
+        navigator.navigateToUserDetails(this, user.userId)
     }
 }
