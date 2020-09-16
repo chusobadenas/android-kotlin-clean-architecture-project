@@ -1,11 +1,13 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.navigation
 
-import android.content.ActivityNotFoundException
-import android.content.Context
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.jesusbadenas.kotlin_clean_architecture_project.App
-import io.mockk.MockKAnnotations
+import com.jesusbadenas.kotlin_clean_architecture_project.main.MainFragmentDirections
+import com.jesusbadenas.kotlin_clean_architecture_project.userlist.UserListFragmentDirections
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
-import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -15,33 +17,39 @@ import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 @Config(application = App::class, sdk = [27])
-class NavigatorTest: AutoCloseKoinTest() {
+class NavigatorTest : AutoCloseKoinTest() {
 
     private val navigator = Navigator()
 
     @MockK(relaxed = true)
-    lateinit var context: Context
+    lateinit var fragment: Fragment
+
+    @MockK(relaxed = true)
+    lateinit var navController: NavController
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
+        every { fragment.findNavController() } returns navController
     }
 
     @Test
     fun testNavigateToUserListSuccess() {
-        try {
-            navigator.navigateToUserList(context)
-        } catch (exception: ActivityNotFoundException) {
-            fail("UserListActivity not found")
-        }
+        val directions = MainFragmentDirections.navigateToUserListFragment()
+        every { navController.navigate(directions) } just Runs
+
+        navigator.navigateToUserList(fragment)
+
+        verify { navController.navigate(directions) }
     }
 
     @Test
     fun testNavigateToUserDetailsSuccess() {
-        try {
-            navigator.navigateToUserDetails(context, 1)
-        } catch (exception: ActivityNotFoundException) {
-            fail("UserDetailsActivity not found")
-        }
+        val directions = UserListFragmentDirections.navigateToUserDetailsFragment(1)
+        every { navController.navigate(directions) } just Runs
+
+        navigator.navigateToUserDetails(fragment, 1)
+
+        verify { navController.navigate(directions) }
     }
 }

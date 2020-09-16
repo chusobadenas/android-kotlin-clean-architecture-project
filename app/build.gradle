@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -87,6 +88,9 @@ dependencies {
     implementation rootProject.ext.lifeCycleViewModelKtx
     implementation rootProject.ext.loggingInterceptor
     implementation rootProject.ext.multidex
+    implementation rootProject.ext.navigationFeature
+    implementation rootProject.ext.navigationFragment
+    implementation rootProject.ext.navigationUi
     implementation rootProject.ext.retrofit
     implementation rootProject.ext.retrofitConverterGson
     implementation rootProject.ext.timber
@@ -103,5 +107,6 @@ dependencies {
     testImplementation rootProject.ext.jUnit
     testImplementation rootProject.ext.koinTest
     testImplementation rootProject.ext.mockk
+    testImplementation rootProject.ext.navigationTest
     testImplementation rootProject.ext.robolectric
 }
