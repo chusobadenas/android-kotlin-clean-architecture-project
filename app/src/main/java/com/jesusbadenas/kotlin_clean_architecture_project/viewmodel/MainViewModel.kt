@@ -5,7 +5,7 @@ import com.jesusbadenas.kotlin_clean_architecture_project.common.LiveEvent
 
 class MainViewModel: BaseViewModel() {
 
-    val loadAction = LiveEvent<Nothing>()
+    val loadAction = LiveEvent<Void>()
 
     fun onLoadButtonClick() {
         loadAction.call()
