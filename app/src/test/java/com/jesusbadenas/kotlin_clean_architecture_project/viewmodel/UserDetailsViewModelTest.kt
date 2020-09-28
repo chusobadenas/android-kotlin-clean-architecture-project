@@ -11,7 +11,9 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.Assert.*
+import kotlinx.coroutines.test.runBlockingTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -30,31 +32,30 @@ class UserDetailsViewModelTest {
     val coroutineRule = CoroutinesTestRule()
 
     @MockK
-    lateinit var userRepository: UserRepository
-
-    private lateinit var userDetailsVM: UserDetailsViewModel
+    private lateinit var userRepository: UserRepository
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        userDetailsVM = UserDetailsViewModel(USER_ID, userRepository, UserDataMapper())
     }
 
     @Test
-    fun testLoadUserDetailsError() {
+    fun testLoadUserDetailsError() = coroutineRule.dispatcher.runBlockingTest {
         val exception = Exception()
         coEvery { userRepository.user(USER_ID) } returns Resource.Error(exception)
 
-        val user = userDetailsVM.user.getOrAwaitValue()
+        val userDetailsVM = UserDetailsViewModel(USER_ID, userRepository, UserDataMapper())
+        val error = userDetailsVM.uiError.getOrAwaitValue()
 
-        assertNull(user)
+        assertEquals(exception, error.throwable)
     }
 
     @Test
-    fun testLoadUserDetailsSuccess() {
+    fun testLoadUserDetailsSuccess() = coroutineRule.dispatcher.runBlockingTest {
         val userData = UserData(USER_ID)
         coEvery { userRepository.user(USER_ID) } returns Resource.Success(userData)
 
+        val userDetailsVM = UserDetailsViewModel(USER_ID, userRepository, UserDataMapper())
         val user = userDetailsVM.user.getOrAwaitValue()
 
         assertNotNull(user)

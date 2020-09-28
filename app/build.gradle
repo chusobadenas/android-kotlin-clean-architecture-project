@@ -78,6 +78,7 @@ dependencies {
     implementation rootProject.ext.coroutinesCore
     implementation rootProject.ext.design
     implementation rootProject.ext.designSupport
+    implementation rootProject.ext.fragment
     implementation rootProject.ext.glide
     implementation rootProject.ext.koinAndroid
     implementation rootProject.ext.koinFragment
@@ -107,6 +108,4 @@ dependencies {
     testImplementation rootProject.ext.jUnit
     testImplementation rootProject.ext.koinTest
     testImplementation rootProject.ext.mockk
-    testImplementation rootProject.ext.navigationTest
-    testImplementation rootProject.ext.robolectric
 }

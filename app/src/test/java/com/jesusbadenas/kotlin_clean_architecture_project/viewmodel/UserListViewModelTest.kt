@@ -11,7 +11,9 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.Assert.*
+import kotlinx.coroutines.test.runBlockingTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -30,31 +32,30 @@ class UserListViewModelTest {
     val coroutineRule = CoroutinesTestRule()
 
     @MockK
-    lateinit var userRepository: UserRepository
-
-    private lateinit var userListVM: UserListViewModel
+    private lateinit var userRepository: UserRepository
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        userListVM = UserListViewModel(userRepository, UserDataMapper())
     }
 
     @Test
-    fun testLoadUserListError() {
+    fun testLoadUserListError() = coroutineRule.dispatcher.runBlockingTest {
         val exception = Exception()
         coEvery { userRepository.users() } returns Resource.Error(exception)
 
-        val userList = userListVM.userList.getOrAwaitValue()
+        val userListVM = UserListViewModel(userRepository, UserDataMapper())
+        val error = userListVM.uiError.getOrAwaitValue()
 
-        assertTrue(userList.isEmpty())
+        assertEquals(exception, error.throwable)
     }
 
     @Test
-    fun testLoadUserListSuccess() {
+    fun testLoadUserListSuccess() = coroutineRule.dispatcher.runBlockingTest {
         val userData = UserData(USER_ID)
         coEvery { userRepository.users() } returns Resource.Success(listOf(userData))
 
+        val userListVM = UserListViewModel(userRepository, UserDataMapper())
         val userList = userListVM.userList.getOrAwaitValue()
 
         assertFalse(userList.isNullOrEmpty())

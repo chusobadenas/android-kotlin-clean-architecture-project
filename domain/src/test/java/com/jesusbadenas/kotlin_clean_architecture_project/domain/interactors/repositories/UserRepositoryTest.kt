@@ -34,7 +34,7 @@ class UserRepositoryTest {
     val coroutineRule = CoroutinesTestRule()
 
     @MockK
-    lateinit var apiService: APIService
+    private lateinit var apiService: APIService
 
     @Before
     fun setUp() {

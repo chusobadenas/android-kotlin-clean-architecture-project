@@ -2,7 +2,7 @@ package com.jesusbadenas.kotlin_clean_architecture_project.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.jesusbadenas.kotlin_clean_architecture_project.R
@@ -18,13 +18,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_layout)
 
         // Toolbar
-        val navController = findNavController(R.id.fragmentContainer)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
+        val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.fragmentContainer)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
+        val navController = navHostFragment.navController
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }
