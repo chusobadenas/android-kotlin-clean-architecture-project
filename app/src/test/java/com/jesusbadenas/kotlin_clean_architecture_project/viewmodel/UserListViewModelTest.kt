@@ -1,7 +1,6 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.jesusbadenas.kotlin_clean_architecture_project.data.common.Resource
 import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories.UserRepository
 import com.jesusbadenas.kotlin_clean_architecture_project.entities.mappers.UserDataMapper
@@ -40,9 +39,9 @@ class UserListViewModelTest {
     }
 
     @Test
-    fun testLoadUserListError() = coroutineRule.dispatcher.runBlockingTest {
+    fun testLoadUserListError() = coroutineRule.runBlockingTest {
         val exception = Exception()
-        coEvery { userRepository.users() } returns Resource.Error(exception)
+        coEvery { userRepository.users() } throws exception
 
         val userListVM = UserListViewModel(userRepository, UserDataMapper())
         val error = userListVM.uiError.getOrAwaitValue()
@@ -51,9 +50,9 @@ class UserListViewModelTest {
     }
 
     @Test
-    fun testLoadUserListSuccess() = coroutineRule.dispatcher.runBlockingTest {
+    fun testLoadUserListSuccess() = coroutineRule.runBlockingTest {
         val userData = UserData(USER_ID)
-        coEvery { userRepository.users() } returns Resource.Success(listOf(userData))
+        coEvery { userRepository.users() } returns listOf(userData)
 
         val userListVM = UserListViewModel(userRepository, UserDataMapper())
         val userList = userListVM.userList.getOrAwaitValue()

@@ -4,6 +4,10 @@ import android.content.DialogInterface
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 abstract class BaseViewModel : ViewModel() {
 
@@ -13,6 +17,10 @@ abstract class BaseViewModel : ViewModel() {
     val uiError = MutableLiveData<UIError>()
 
     val retryAction = LiveEvent<Nothing>()
+
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        showError(throwable)
+    }
 
     init {
         showLoading(View.VISIBLE)
@@ -31,20 +39,27 @@ abstract class BaseViewModel : ViewModel() {
             if (retryVisibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
 
-    fun showError(
-        throwable: Throwable,
-        logMessage: String,
-        errorMsgId: Int? = null,
-        action: DialogInterface.OnClickListener? = null
-    ) {
-        showLoading(View.GONE)
-        showRetry(View.VISIBLE)
-        uiError.value = UIError(throwable, logMessage, errorMsgId, action)
-    }
-
     fun onRetryButtonClick() {
         showRetry(View.GONE)
         showLoading(View.VISIBLE)
         retryAction.call()
     }
+
+    fun showError(
+        throwable: Throwable,
+        errorMsgId: Int? = null,
+        action: DialogInterface.OnClickListener? = null
+    ) {
+        showLoading(View.GONE)
+        showRetry(View.VISIBLE)
+        uiError.value = UIError(throwable, errorMsgId, action)
+    }
+
+    fun CoroutineScope.safeLaunch(
+        exceptionHandler: CoroutineExceptionHandler = coroutineExceptionHandler,
+        body: suspend () -> Unit
+    ): Job =
+        launch(exceptionHandler) {
+            body.invoke()
+        }
 }

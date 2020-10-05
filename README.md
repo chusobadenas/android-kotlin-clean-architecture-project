@@ -16,4 +16,3 @@ An Android boilerplate project using Clean Architecture and Kotlin.
 - [Timber](https://github.com/JakeWharton/timber)
 
 - [MockK](https://mockk.io/)
-- [Robolectric](http://robolectric.org)
