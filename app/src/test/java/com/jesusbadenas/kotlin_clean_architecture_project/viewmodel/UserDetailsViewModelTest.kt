@@ -1,7 +1,6 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.jesusbadenas.kotlin_clean_architecture_project.data.common.Resource
 import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories.UserRepository
 import com.jesusbadenas.kotlin_clean_architecture_project.entities.mappers.UserDataMapper
@@ -40,9 +39,9 @@ class UserDetailsViewModelTest {
     }
 
     @Test
-    fun testLoadUserDetailsError() = coroutineRule.dispatcher.runBlockingTest {
+    fun testLoadUserDetailsError() = coroutineRule.runBlockingTest {
         val exception = Exception()
-        coEvery { userRepository.user(USER_ID) } returns Resource.Error(exception)
+        coEvery { userRepository.user(USER_ID) } throws exception
 
         val userDetailsVM = UserDetailsViewModel(USER_ID, userRepository, UserDataMapper())
         val error = userDetailsVM.uiError.getOrAwaitValue()
@@ -51,9 +50,9 @@ class UserDetailsViewModelTest {
     }
 
     @Test
-    fun testLoadUserDetailsSuccess() = coroutineRule.dispatcher.runBlockingTest {
+    fun testLoadUserDetailsSuccess() = coroutineRule.runBlockingTest {
         val userData = UserData(USER_ID)
-        coEvery { userRepository.user(USER_ID) } returns Resource.Success(userData)
+        coEvery { userRepository.user(USER_ID) } returns userData
 
         val userDetailsVM = UserDetailsViewModel(USER_ID, userRepository, UserDataMapper())
         val user = userDetailsVM.user.getOrAwaitValue()

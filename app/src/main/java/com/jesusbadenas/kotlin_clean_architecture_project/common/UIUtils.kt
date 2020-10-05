@@ -25,7 +25,7 @@ object UIUtils {
 
     fun showError(context: Context, uiError: UIError) {
         // Show log message
-        Timber.e(uiError.throwable, uiError.logMessage)
+        Timber.e(uiError.throwable)
 
         // Show dialog
         val message = uiError.errorMsgId?.let {

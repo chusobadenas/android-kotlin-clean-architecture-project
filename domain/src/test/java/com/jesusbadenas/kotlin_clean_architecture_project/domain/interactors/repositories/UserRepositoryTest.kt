@@ -1,8 +1,6 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.domain.interactors.repositories
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.jesusbadenas.kotlin_clean_architecture_project.data.api.APIService
-import com.jesusbadenas.kotlin_clean_architecture_project.data.common.Resource
 import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories.UserRepository
 import com.jesusbadenas.kotlin_clean_architecture_project.test.CoroutinesTestRule
@@ -28,9 +26,6 @@ class UserRepositoryTest {
     private lateinit var userRepository: UserRepository
 
     @get:Rule
-    val rule = InstantTaskExecutorRule()
-
-    @get:Rule
     val coroutineRule = CoroutinesTestRule()
 
     @MockK
@@ -49,11 +44,10 @@ class UserRepositoryTest {
         coEvery { apiService.userDataList() } returns userDataList
 
         val result = runBlocking { userRepository.users() }
-        val userList = (result as Resource.Success).data!!
 
-        assertTrue(userList.isNotEmpty())
-        assertSame(userList.size, 1)
-        assertSame(userList[0].userId, USER_ID)
+        assertTrue(result.isNotEmpty())
+        assertSame(result.size, 1)
+        assertSame(result[0].userId, USER_ID)
     }
 
     @Test
@@ -61,8 +55,7 @@ class UserRepositoryTest {
         coEvery { apiService.userDataById(USER_ID) } returns userData
 
         val result = runBlocking { userRepository.user(USER_ID) }
-        val user = (result as Resource.Success).data!!
 
-        assertSame(user.userId, USER_ID)
+        assertSame(result.userId, USER_ID)
     }
 }
