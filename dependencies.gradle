@@ -1,7 +1,7 @@
 ext {
     // Android
-    versionCode = 8
-    versionName = "3.2.2"
+    versionCode = 9
+    versionName = "3.2.3"
     minSdkVersion = 21
     targetSdkVersion = 30
     compileSdkVersion = 30
