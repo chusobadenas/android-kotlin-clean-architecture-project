@@ -2,7 +2,7 @@
 apply from: 'dependencies.gradle'
 
 buildscript {
-    ext.ANDROID_GRADLE_VERSION = '4.0.1'
+    ext.ANDROID_GRADLE_VERSION = '4.0.2'
     ext.KOTLIN_VERSION = '1.4.10'
     ext.NAV_VERSION = '2.3.0'
     repositories {

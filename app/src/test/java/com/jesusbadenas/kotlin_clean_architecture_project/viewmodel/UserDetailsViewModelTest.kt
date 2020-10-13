@@ -3,7 +3,6 @@ package com.jesusbadenas.kotlin_clean_architecture_project.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories.UserRepository
-import com.jesusbadenas.kotlin_clean_architecture_project.entities.mappers.UserDataMapper
 import com.jesusbadenas.kotlin_clean_architecture_project.test.CoroutinesTestRule
 import com.jesusbadenas.kotlin_clean_architecture_project.test.getOrAwaitValue
 import io.mockk.MockKAnnotations
@@ -43,7 +42,7 @@ class UserDetailsViewModelTest {
         val exception = Exception()
         coEvery { userRepository.user(USER_ID) } throws exception
 
-        val userDetailsVM = UserDetailsViewModel(USER_ID, userRepository, UserDataMapper())
+        val userDetailsVM = UserDetailsViewModel(USER_ID, userRepository)
         val error = userDetailsVM.uiError.getOrAwaitValue()
 
         assertEquals(exception, error.throwable)
@@ -54,7 +53,7 @@ class UserDetailsViewModelTest {
         val userData = UserData(USER_ID)
         coEvery { userRepository.user(USER_ID) } returns userData
 
-        val userDetailsVM = UserDetailsViewModel(USER_ID, userRepository, UserDataMapper())
+        val userDetailsVM = UserDetailsViewModel(USER_ID, userRepository)
         val user = userDetailsVM.user.getOrAwaitValue()
 
         assertNotNull(user)

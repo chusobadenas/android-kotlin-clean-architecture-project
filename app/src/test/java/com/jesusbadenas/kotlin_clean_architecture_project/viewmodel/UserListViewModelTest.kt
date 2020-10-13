@@ -3,7 +3,6 @@ package com.jesusbadenas.kotlin_clean_architecture_project.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories.UserRepository
-import com.jesusbadenas.kotlin_clean_architecture_project.entities.mappers.UserDataMapper
 import com.jesusbadenas.kotlin_clean_architecture_project.test.CoroutinesTestRule
 import com.jesusbadenas.kotlin_clean_architecture_project.test.getOrAwaitValue
 import io.mockk.MockKAnnotations
@@ -43,7 +42,7 @@ class UserListViewModelTest {
         val exception = Exception()
         coEvery { userRepository.users() } throws exception
 
-        val userListVM = UserListViewModel(userRepository, UserDataMapper())
+        val userListVM = UserListViewModel(userRepository)
         val error = userListVM.uiError.getOrAwaitValue()
 
         assertEquals(exception, error.throwable)
@@ -54,7 +53,7 @@ class UserListViewModelTest {
         val userData = UserData(USER_ID)
         coEvery { userRepository.users() } returns listOf(userData)
 
-        val userListVM = UserListViewModel(userRepository, UserDataMapper())
+        val userListVM = UserListViewModel(userRepository)
         val userList = userListVM.userList.getOrAwaitValue()
 
         assertFalse(userList.isNullOrEmpty())

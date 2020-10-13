@@ -1,10 +1,9 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.data.entities
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
-/**
- * User used in the data layer.
- */
+@Keep
 data class UserData(
     @SerializedName("id") val userId: Int,
     @SerializedName("cover_url") var coverUrl: String? = null,
