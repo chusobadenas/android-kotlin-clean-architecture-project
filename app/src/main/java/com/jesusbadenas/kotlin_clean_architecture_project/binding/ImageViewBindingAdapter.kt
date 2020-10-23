@@ -2,9 +2,17 @@ package com.jesusbadenas.kotlin_clean_architecture_project.binding
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import com.jesusbadenas.kotlin_clean_architecture_project.common.UIUtils
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.jesusbadenas.kotlin_clean_architecture_project.R
+import com.jesusbadenas.kotlin_clean_architecture_project.di.GlideApp
 
 @BindingAdapter("imageUrl")
 fun ImageView.setImageUrl(imageUrl: String?) {
-    UIUtils.loadImageUrl(context, this, imageUrl)
+    GlideApp.with(context)
+        .load(imageUrl)
+        .centerCrop()
+        .placeholder(R.color.bg_light_grey)
+        .error(R.color.bg_light_grey)
+        .transition(DrawableTransitionOptions.withCrossFade())
+        .into(this)
 }

@@ -1,8 +1,8 @@
-package com.jesusbadenas.kotlin_clean_architecture_project.entities
+package com.jesusbadenas.kotlin_clean_architecture_project.domain.model
 
-/**
- * User used in the presentation layer.
- */
+import androidx.annotation.Keep
+
+@Keep
 data class User(
     val userId: Int,
     var coverUrl: String? = null,

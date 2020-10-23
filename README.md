@@ -1,7 +1,7 @@
 # kotlin-clean-architecture-project
 An Android boilerplate project using Clean Architecture and Kotlin.
 
-### Languages, libraries and tools used ###
+### Architecture components ###
 
 - [Kotlin](https://developer.android.com/kotlin?hl=en)
 - [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)
@@ -9,8 +9,11 @@ An Android boilerplate project using Clean Architecture and Kotlin.
 - [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)
 - [Navigation Component](https://developer.android.com/guide/navigation/navigation-getting-started)
 
+### 3rd-party libraries ###
+
 - [Glide](https://github.com/bumptech/glide)
 - [Koin](https://insert-koin.io)
+- [Moshi](https://github.com/square/moshi)
 - [OkHttp](https://square.github.io/okhttp)
 - [Retrofit](https://square.github.io/retrofit)
 - [Timber](https://github.com/JakeWharton/timber)

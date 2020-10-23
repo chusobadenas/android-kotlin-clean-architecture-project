@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.jesusbadenas.kotlin_clean_architecture_project.R
-import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseFragment
-import com.jesusbadenas.kotlin_clean_architecture_project.common.UIUtils
+import com.jesusbadenas.kotlin_clean_architecture_project.common.showError
 import com.jesusbadenas.kotlin_clean_architecture_project.databinding.FragmentUserDetailsBinding
-import com.jesusbadenas.kotlin_clean_architecture_project.entities.User
+import com.jesusbadenas.kotlin_clean_architecture_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.UserDetailsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -18,11 +18,10 @@ import org.koin.core.parameter.parametersOf
 /**
  * Fragment that shows details of a certain User.
  */
-class UserDetailsFragment : BaseFragment() {
+class UserDetailsFragment : Fragment() {
 
     private val navArgs: UserDetailsFragmentArgs by navArgs()
-
-    private val userDetailsVM: UserDetailsViewModel by viewModel {
+    private val viewModel: UserDetailsViewModel by viewModel {
         parametersOf(navArgs.userId)
     }
 
@@ -39,32 +38,29 @@ class UserDetailsFragment : BaseFragment() {
         binding.lifecycleOwner = this
 
         // View model
-        binding.viewModel = userDetailsVM
-        binding.viewProgress.viewModel = userDetailsVM
-        binding.viewRetry.viewModel = userDetailsVM
+        binding.viewModel = viewModel
+        binding.viewProgress.viewModel = viewModel
+        binding.viewRetry.viewModel = viewModel
         subscribe()
 
         return binding.root
     }
 
     private fun subscribe() {
-        userDetailsVM.uiError.observe(viewLifecycleOwner) { error ->
-            UIUtils.showError(context(), error)
+        viewModel.retryAction.observe(viewLifecycleOwner) {
+            viewModel.loadUser()
         }
-
-        userDetailsVM.retryAction.observe(viewLifecycleOwner) {
-            userDetailsVM.loadUser()
-        }
-
-        // User details
-        userDetailsVM.user.observe(viewLifecycleOwner) { user ->
+        viewModel.user.observe(viewLifecycleOwner) { user ->
             loadUserDetails(user)
+        }
+        viewModel.uiError.observe(viewLifecycleOwner) { uiError ->
+            showError(uiError)
         }
     }
 
     private fun loadUserDetails(user: User?) {
-        userDetailsVM.showLoading(View.GONE)
-        userDetailsVM.showRetry(userDetailsVM.retryVisibility.value!!)
+        viewModel.showLoading(View.GONE)
+        viewModel.showRetry(viewModel.retryVisibility.value!!)
         binding.user = user
     }
 }
