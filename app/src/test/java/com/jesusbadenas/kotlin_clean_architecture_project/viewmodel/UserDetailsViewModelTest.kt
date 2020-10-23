@@ -1,12 +1,13 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
-import com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories.UserRepository
+import com.jesusbadenas.kotlin_clean_architecture_project.domain.interactor.GetUser
+import com.jesusbadenas.kotlin_clean_architecture_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_architecture_project.test.CoroutinesTestRule
 import com.jesusbadenas.kotlin_clean_architecture_project.test.getOrAwaitValue
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -19,10 +20,6 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class UserDetailsViewModelTest {
 
-    companion object {
-        private const val USER_ID = 1
-    }
-
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
@@ -30,7 +27,7 @@ class UserDetailsViewModelTest {
     val coroutineRule = CoroutinesTestRule()
 
     @MockK
-    private lateinit var userRepository: UserRepository
+    private lateinit var getUser: GetUser
 
     @Before
     fun setUp() {
@@ -40,9 +37,9 @@ class UserDetailsViewModelTest {
     @Test
     fun testLoadUserDetailsError() = coroutineRule.runBlockingTest {
         val exception = Exception()
-        coEvery { userRepository.user(USER_ID) } throws exception
+        coEvery { getUser.invoke(USER_ID) } throws exception
 
-        val userDetailsVM = UserDetailsViewModel(USER_ID, userRepository)
+        val userDetailsVM = UserDetailsViewModel(USER_ID, getUser)
         val error = userDetailsVM.uiError.getOrAwaitValue()
 
         assertEquals(exception, error.throwable)
@@ -50,13 +47,18 @@ class UserDetailsViewModelTest {
 
     @Test
     fun testLoadUserDetailsSuccess() = coroutineRule.runBlockingTest {
-        val userData = UserData(USER_ID)
-        coEvery { userRepository.user(USER_ID) } returns userData
+        val user = User(USER_ID)
+        coEvery { getUser.invoke(USER_ID) } returns user
 
-        val userDetailsVM = UserDetailsViewModel(USER_ID, userRepository)
-        val user = userDetailsVM.user.getOrAwaitValue()
+        val userDetailsVM = UserDetailsViewModel(USER_ID, getUser)
+        val result = userDetailsVM.user.getOrAwaitValue()
 
-        assertNotNull(user)
-        assertEquals(user.userId, USER_ID)
+        coVerify { getUser.invoke(USER_ID) }
+        assertNotNull(result)
+        assertEquals(USER_ID, result.userId)
+    }
+
+    companion object {
+        private const val USER_ID = 1
     }
 }

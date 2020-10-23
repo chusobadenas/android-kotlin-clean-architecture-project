@@ -5,15 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.jesusbadenas.kotlin_clean_architecture_project.R
-import com.jesusbadenas.kotlin_clean_architecture_project.common.BaseFragment
 import com.jesusbadenas.kotlin_clean_architecture_project.databinding.FragmentMainBinding
+import com.jesusbadenas.kotlin_clean_architecture_project.navigation.Navigator
 import com.jesusbadenas.kotlin_clean_architecture_project.viewmodel.MainViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainFragment : BaseFragment() {
+class MainFragment : Fragment() {
 
-    private val mainVM: MainViewModel by viewModel()
+    private val navigator: Navigator by inject()
+    private val viewModel: MainViewModel by viewModel()
 
     private lateinit var binding: FragmentMainBinding
 
@@ -27,14 +30,14 @@ class MainFragment : BaseFragment() {
         binding.lifecycleOwner = this
 
         // View model
-        binding.viewModel = mainVM
+        binding.viewModel = viewModel
         subscribe()
 
         return binding.root
     }
 
     private fun subscribe() {
-        mainVM.loadAction.observe(viewLifecycleOwner) {
+        viewModel.loadAction.observe(viewLifecycleOwner) {
             navigateToUserList()
         }
     }

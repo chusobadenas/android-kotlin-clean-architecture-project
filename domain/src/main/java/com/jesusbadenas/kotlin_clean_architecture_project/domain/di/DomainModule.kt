@@ -1,8 +1,10 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.domain.di
 
-import com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories.UserRepository
+import com.jesusbadenas.kotlin_clean_architecture_project.domain.interactor.GetUser
+import com.jesusbadenas.kotlin_clean_architecture_project.domain.interactor.GetUsers
 import org.koin.dsl.module
 
 val domainModule = module {
-    single { UserRepository(get()) }
+    factory { GetUser(get()) }
+    factory { GetUsers(get()) }
 }

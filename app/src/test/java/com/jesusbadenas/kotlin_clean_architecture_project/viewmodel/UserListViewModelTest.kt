@@ -1,12 +1,13 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
-import com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories.UserRepository
+import com.jesusbadenas.kotlin_clean_architecture_project.domain.interactor.GetUsers
+import com.jesusbadenas.kotlin_clean_architecture_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_architecture_project.test.CoroutinesTestRule
 import com.jesusbadenas.kotlin_clean_architecture_project.test.getOrAwaitValue
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -19,10 +20,6 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class UserListViewModelTest {
 
-    companion object {
-        private const val USER_ID = 1
-    }
-
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
@@ -30,7 +27,7 @@ class UserListViewModelTest {
     val coroutineRule = CoroutinesTestRule()
 
     @MockK
-    private lateinit var userRepository: UserRepository
+    private lateinit var getUsers: GetUsers
 
     @Before
     fun setUp() {
@@ -40,9 +37,9 @@ class UserListViewModelTest {
     @Test
     fun testLoadUserListError() = coroutineRule.runBlockingTest {
         val exception = Exception()
-        coEvery { userRepository.users() } throws exception
+        coEvery { getUsers.invoke() } throws exception
 
-        val userListVM = UserListViewModel(userRepository)
+        val userListVM = UserListViewModel(getUsers)
         val error = userListVM.uiError.getOrAwaitValue()
 
         assertEquals(exception, error.throwable)
@@ -50,13 +47,18 @@ class UserListViewModelTest {
 
     @Test
     fun testLoadUserListSuccess() = coroutineRule.runBlockingTest {
-        val userData = UserData(USER_ID)
-        coEvery { userRepository.users() } returns listOf(userData)
+        val user = User(USER_ID)
+        coEvery { getUsers.invoke() } returns listOf(user)
 
-        val userListVM = UserListViewModel(userRepository)
+        val userListVM = UserListViewModel(getUsers)
         val userList = userListVM.userList.getOrAwaitValue()
 
+        coVerify { getUsers.invoke() }
         assertFalse(userList.isNullOrEmpty())
         assertEquals(userList[0].userId, USER_ID)
+    }
+
+    companion object {
+        private const val USER_ID = 1
     }
 }

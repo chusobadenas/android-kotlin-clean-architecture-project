@@ -8,12 +8,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jesusbadenas.kotlin_clean_architecture_project.R
 import com.jesusbadenas.kotlin_clean_architecture_project.databinding.ItemUserBinding
-import com.jesusbadenas.kotlin_clean_architecture_project.entities.User
+import com.jesusbadenas.kotlin_clean_architecture_project.domain.model.User
+import com.jesusbadenas.kotlin_clean_architecture_project.userlist.UserAdapter.UserViewHolder
 
-/**
- * Adapter that manages a collection of {@link UserModel}.
- */
-class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallback()) {
+class UserAdapter : ListAdapter<User, UserViewHolder>(UserDiffCallback()) {
 
     interface OnItemClickListener {
         fun onUserItemClicked(user: User)

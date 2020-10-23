@@ -1,8 +1,8 @@
-package com.jesusbadenas.kotlin_clean_architecture_project.domain.interactors.repositories
+package com.jesusbadenas.kotlin_clean_architecture_project.data.repository
 
 import com.jesusbadenas.kotlin_clean_architecture_project.data.api.APIService
-import com.jesusbadenas.kotlin_clean_architecture_project.data.entities.UserData
-import com.jesusbadenas.kotlin_clean_architecture_project.domain.repositories.UserRepository
+import com.jesusbadenas.kotlin_clean_architecture_project.data.api.response.UserResponse
+import com.jesusbadenas.kotlin_clean_architecture_project.domain.repository.UserRepository
 import com.jesusbadenas.kotlin_clean_architecture_project.test.CoroutinesTestRule
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -16,14 +16,10 @@ import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class UserRepositoryTest {
+class UserDataRepositoryTest {
 
-    companion object {
-        private const val USER_ID = 1
-    }
-
-    private val userData: UserData = UserData(USER_ID)
-    private lateinit var userRepository: UserRepository
+    private val userResponse = UserResponse(USER_ID)
+    private lateinit var userDataRepository: UserRepository
 
     @get:Rule
     val coroutineRule = CoroutinesTestRule()
@@ -34,16 +30,14 @@ class UserRepositoryTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        userRepository = UserRepository(apiService)
+        userDataRepository = UserDataRepository(apiService)
     }
 
     @Test
     fun testGetUsers() {
-        val userDataList = arrayListOf(userData)
+        coEvery { apiService.userDataList() } returns listOf(userResponse)
 
-        coEvery { apiService.userDataList() } returns userDataList
-
-        val result = runBlocking { userRepository.users() }
+        val result = runBlocking { userDataRepository.users() }
 
         assertTrue(result.isNotEmpty())
         assertSame(result.size, 1)
@@ -52,10 +46,14 @@ class UserRepositoryTest {
 
     @Test
     fun testGetUserById() {
-        coEvery { apiService.userDataById(USER_ID) } returns userData
+        coEvery { apiService.userDataById(USER_ID) } returns userResponse
 
-        val result = runBlocking { userRepository.user(USER_ID) }
+        val result = runBlocking { userDataRepository.user(USER_ID) }
 
         assertSame(result.userId, USER_ID)
+    }
+
+    companion object {
+        private const val USER_ID = 1
     }
 }
