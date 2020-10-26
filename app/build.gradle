@@ -132,7 +132,7 @@ dependencies {
     androidTestImplementation rootProject.ext.androidXTestRunner
     androidTestImplementation rootProject.ext.coroutinesTest
     androidTestImplementation rootProject.ext.espresso
-    androidTestImplementation rootProject.ext.espressoIntents
+    androidTestImplementation rootProject.ext.espressoContrib
     androidTestImplementation rootProject.ext.fragmentTest
     androidTestImplementation rootProject.ext.mockkAndroid
     androidTestImplementation rootProject.ext.navigationTest
