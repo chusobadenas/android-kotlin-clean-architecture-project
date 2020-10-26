@@ -1,11 +1,13 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.data.di
 
 import android.content.Context
+import androidx.room.Room
 import com.jesusbadenas.kotlin_clean_architecture_project.data.BuildConfig
 import com.jesusbadenas.kotlin_clean_architecture_project.data.api.APIService
 import com.jesusbadenas.kotlin_clean_architecture_project.data.api.Network
 import com.jesusbadenas.kotlin_clean_architecture_project.data.api.exception.InternalServerErrorException
 import com.jesusbadenas.kotlin_clean_architecture_project.data.api.exception.NetworkException
+import com.jesusbadenas.kotlin_clean_architecture_project.data.db.AppDatabase
 import com.jesusbadenas.kotlin_clean_architecture_project.data.repository.UserDataRepository
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.repository.UserRepository
 import okhttp3.Cache
@@ -19,6 +21,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 private const val CACHE_SIZE_MB: Long = 5 * 1024 * 1024
+private const val DB_NAME = "app-database"
 private const val INTERNAL_SERVER_ERROR = 500
 private const val INTERNAL_SERVER_ERROR_INTERCEPTOR = "internal_server_error_interceptor"
 private const val NETWORK_INTERCEPTOR = "network_interceptor"
@@ -36,8 +39,9 @@ val dataModule = module {
         )
     }
     factory { provideAPIService(get()) }
-    factory<UserRepository> { UserDataRepository(get()) }
+    factory<UserRepository> { UserDataRepository(get(), get()) }
     single { provideRetrofit(get()) }
+    single { provideDatabase(androidContext()) }
 }
 
 private fun provideInternalServerInterceptor(): Interceptor = Interceptor { chain ->
@@ -86,3 +90,6 @@ private fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
 
 private fun provideAPIService(retrofit: Retrofit): APIService =
     retrofit.create(APIService::class.java)
+
+private fun provideDatabase(context: Context) =
+    Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, DB_NAME).build()

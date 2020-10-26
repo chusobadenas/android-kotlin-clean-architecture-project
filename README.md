@@ -8,6 +8,7 @@ An Android boilerplate project using Clean Architecture and Kotlin.
 - [Data Binding](https://developer.android.com/topic/libraries/data-binding)
 - [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)
 - [Navigation Component](https://developer.android.com/guide/navigation/navigation-getting-started)
+- [Room](https://developer.android.com/topic/libraries/architecture/room)
 
 ### 3rd-party libraries ###
 

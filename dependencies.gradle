@@ -1,7 +1,7 @@
 ext {
     // Android
-    versionCode = 9
-    versionName = "3.3"
+    versionCode = 10
+    versionName = "3.4"
     minSdkVersion = 23
     targetSdkVersion = 30
     compileSdkVersion = 30
@@ -25,6 +25,7 @@ ext {
     okHttpVersion = '4.9.0'
     recyclerviewVersion = '1.1.0'
     retrofitVersion = '2.9.0'
+    roomVersion = '2.3.0-alpha03'
     swipeRefreshLayoutVersion = '1.1.0'
     timberVersion = '4.7.1'
 
@@ -56,13 +57,16 @@ ext {
     recyclerView = "androidx.recyclerview:recyclerview:$recyclerviewVersion"
     retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
     retrofitConverterMoshi = "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+    room = "androidx.room:room-runtime:$roomVersion"
+    roomKtx = "androidx.room:room-ktx:$roomVersion"
+    roomCompiler = "androidx.room:room-compiler:$roomVersion"
     swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshLayoutVersion"
     timber = "com.jakewharton.timber:timber:$timberVersion"
 
     // Testing
     androidXJUnitVersion = '1.1.2'
     androidXTestVersion = '1.3.0'
-    espressoVersion = '3.1.0'
+    espressoVersion = '3.3.0'
     junitVersion = '4.13.1'
     mockkVersion = '1.10.2'
 
@@ -80,4 +84,5 @@ ext {
     mockk = "io.mockk:mockk:$mockkVersion"
     mockkAndroid = "io.mockk:mockk-android:$mockkVersion"
     navigationTest = "androidx.navigation:navigation-testing:$NAV_VERSION"
+    roomTest = "androidx.room:room-testing:$roomVersion"
 }

@@ -29,6 +29,12 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+
+    packagingOptions {
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+    }
 }
 
 dependencies {
@@ -43,10 +49,23 @@ dependencies {
     implementation rootProject.ext.okHttp
     implementation rootProject.ext.retrofit
     implementation rootProject.ext.retrofitConverterMoshi
+    implementation rootProject.ext.room
+    implementation rootProject.ext.roomKtx
+
+    kapt rootProject.ext.roomCompiler
 
     testImplementation project(':test')
     testImplementation rootProject.ext.archCoreTesting
     testImplementation rootProject.ext.coroutinesTest
     testImplementation rootProject.ext.jUnit
     testImplementation rootProject.ext.mockk
+
+    androidTestImplementation project(':test')
+    androidTestImplementation rootProject.ext.androidXJUnitKtx
+    androidTestImplementation rootProject.ext.androidXTestCoreKtx
+    androidTestImplementation rootProject.ext.androidXTestRules
+    androidTestImplementation rootProject.ext.androidXTestRunner
+    androidTestImplementation rootProject.ext.coroutinesTest
+    androidTestImplementation rootProject.ext.mockkAndroid
+    androidTestImplementation rootProject.ext.roomTest
 }
