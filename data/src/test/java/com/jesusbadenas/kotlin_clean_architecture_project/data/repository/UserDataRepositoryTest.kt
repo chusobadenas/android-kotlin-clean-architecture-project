@@ -2,10 +2,11 @@ package com.jesusbadenas.kotlin_clean_architecture_project.data.repository
 
 import com.jesusbadenas.kotlin_clean_architecture_project.data.api.APIService
 import com.jesusbadenas.kotlin_clean_architecture_project.data.api.response.UserResponse
+import com.jesusbadenas.kotlin_clean_architecture_project.data.db.AppDatabase
+import com.jesusbadenas.kotlin_clean_architecture_project.data.db.dao.UserDao
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.repository.UserRepository
 import com.jesusbadenas.kotlin_clean_architecture_project.test.CoroutinesTestRule
-import io.mockk.MockKAnnotations
-import io.mockk.coEvery
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -18,26 +19,41 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class UserDataRepositoryTest {
 
-    private val userResponse = UserResponse(USER_ID)
-    private lateinit var userDataRepository: UserRepository
-
     @get:Rule
     val coroutineRule = CoroutinesTestRule()
 
     @MockK
     private lateinit var apiService: APIService
 
+    @MockK
+    private lateinit var database: AppDatabase
+
+    @MockK
+    private lateinit var userDao: UserDao
+
+    private val userResponse = UserResponse(USER_ID)
+
+    private lateinit var userDataRepository: UserRepository
+
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        userDataRepository = UserDataRepository(apiService)
+        every { database.userDao() } returns userDao
+
+        userDataRepository = UserDataRepository(apiService, database)
     }
 
     @Test
-    fun testGetUsers() {
+    fun testGetUsersFromNetworkSuccess() {
+        coEvery { userDao.getAll() } returns emptyList()
         coEvery { apiService.userDataList() } returns listOf(userResponse)
+        coEvery { userDao.insert(any()) } just Runs
 
         val result = runBlocking { userDataRepository.users() }
+
+        coVerify { userDao.getAll() }
+        coVerify { apiService.userDataList() }
+        coVerify { userDao.insert(any()) }
 
         assertTrue(result.isNotEmpty())
         assertSame(result.size, 1)
@@ -45,10 +61,16 @@ class UserDataRepositoryTest {
     }
 
     @Test
-    fun testGetUserById() {
+    fun testGetUserByIdFromNetworkSuccess() {
+        coEvery { userDao.findById(USER_ID) } returns null
         coEvery { apiService.userDataById(USER_ID) } returns userResponse
+        coEvery { userDao.insert(any()) } just Runs
 
         val result = runBlocking { userDataRepository.user(USER_ID) }
+
+        coVerify { userDao.findById(USER_ID) }
+        coVerify { apiService.userDataById(USER_ID) }
+        coVerify { userDao.insert(any()) }
 
         assertSame(result.userId, USER_ID)
     }
