@@ -4,7 +4,7 @@ import com.jesusbadenas.kotlin_clean_architecture_project.domain.model.User
 
 interface UserRepository {
 
-    suspend fun users(): List<User>
+    suspend fun getUsers(): List<User>
 
-    suspend fun user(userId: Int): User
+    suspend fun getUser(userId: Int): User?
 }

@@ -1,13 +1,14 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.domain.model
 
 import androidx.annotation.Keep
+import kotlinx.serialization.Serializable
 
 @Keep
+@Serializable
 data class User(
-    val userId: Int,
-    var coverUrl: String? = null,
-    var fullName: String? = null,
-    var email: String? = null,
-    var description: String? = null,
-    var followers: Int? = 0
+    val id: Int,
+    val email: String? = null,
+    val imageUrl: String? = null,
+    val name: String? = null,
+    val website: String? = null
 )

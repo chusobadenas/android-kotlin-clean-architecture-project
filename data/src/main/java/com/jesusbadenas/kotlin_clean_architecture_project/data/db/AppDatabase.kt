@@ -7,7 +7,7 @@ import com.jesusbadenas.kotlin_clean_architecture_project.data.db.model.UserEnti
 
 @Database(
     entities = [UserEntity::class],
-    version = 1
+    version = DBConstants.DB_VERSION
 )
 abstract class AppDatabase : RoomDatabase() {
 

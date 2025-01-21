@@ -1,64 +1,58 @@
 package com.jesusbadenas.kotlin_clean_architecture_project.data.util
 
-import com.jesusbadenas.kotlin_clean_architecture_project.data.api.response.UserResponse
+import com.jesusbadenas.kotlin_clean_architecture_project.data.api.model.UserDTO
 import com.jesusbadenas.kotlin_clean_architecture_project.data.db.model.UserEntity
 import com.jesusbadenas.kotlin_clean_architecture_project.domain.model.User
-import org.junit.Assert
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
 
 class ExtensionsTest {
 
     private val user = User(
-        userId = 1,
-        coverUrl = "https://localhost/images/1",
-        fullName = "John Doe",
+        id = 1,
         email = "john.doe@example.com",
-        description = "",
-        followers = 10
+        imageUrl = "https://thispersondoesnotexist.com/",
+        name = "John Doe",
+        website = ""
     )
 
-    @Test
-    fun testUserResponseConversionSuccess() {
-        val userResponse = UserResponse(
-            userId = 1,
-            coverUrl = "https://localhost/images/1",
-            fullName = "John Doe",
+    @org.junit.jupiter.api.Test
+    fun `test transform UserResponse to User success`() {
+        val userDTO = UserDTO(
+            id = 1,
             email = "john.doe@example.com",
-            description = "",
-            followers = 10
+            name = "John Doe",
+            website = ""
         )
 
-        val result = userResponse.toUser()
-        Assert.assertEquals(user, result)
+        val result = userDTO.toUser()
+        Assertions.assertEquals(user, result)
     }
 
-    @Test
-    fun testUserEntityConversionSuccess() {
+    @org.junit.jupiter.api.Test
+    fun `test transform UserEntity to User success`() {
         val userEntity = UserEntity(
             id = 1,
-            coverUrl = "https://localhost/images/1",
-            fullName = "John Doe",
             email = "john.doe@example.com",
-            description = "",
-            followers = 10
+            imageUrl = "https://thispersondoesnotexist.com/",
+            name = "John Doe",
+            website = ""
         )
 
         val result = userEntity.toUser()
-        Assert.assertEquals(user, result)
+        Assertions.assertEquals(user, result)
     }
 
-    @Test
-    fun testUserConversionSuccess() {
+    @org.junit.jupiter.api.Test
+    fun `test transform User to UserEntity success`() {
         val expected = UserEntity(
             id = 1,
-            coverUrl = "https://localhost/images/1",
-            fullName = "John Doe",
             email = "john.doe@example.com",
-            description = "",
-            followers = 10
+            imageUrl = "https://thispersondoesnotexist.com/",
+            name = "John Doe",
+            website = ""
         )
 
         val result = user.toUserEntity()
-        Assert.assertEquals(expected, result)
+        Assertions.assertEquals(expected, result)
     }
 }

@@ -9,12 +9,12 @@ import com.jesusbadenas.kotlin_clean_architecture_project.data.db.model.UserEnti
 @Dao
 interface UserDao {
 
-    @Query("SELECT * FROM users WHERE id = :id LIMIT 1")
-    suspend fun findById(id: Int): UserEntity?
-
     @Query("SELECT * FROM users")
     suspend fun getAll(): List<UserEntity>
 
+    @Query("SELECT * FROM users WHERE id = :id")
+    suspend fun getById(id: Int): UserEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(vararg users: UserEntity)
+    suspend fun insert(users: List<UserEntity>)
 }

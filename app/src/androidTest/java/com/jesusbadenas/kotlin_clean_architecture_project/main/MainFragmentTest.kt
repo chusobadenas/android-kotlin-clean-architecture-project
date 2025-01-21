@@ -8,7 +8,8 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.jesusbadenas.kotlin_clean_architecture_project.R
+import com.jesusbadenas.kotlin_clean_architecture_project.presentation.R
+import com.jesusbadenas.kotlin_clean_architecture_project.presentation.main.MainActivity
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -23,7 +24,7 @@ class MainFragmentTest {
         }
 
         // Verify fragment is opened
-        onView(withId(R.id.btn_LoadData)).perform(click())
+        onView(withId(R.id.button_load_data)).perform(click())
         onView(withId(R.id.rv_users)).check(matches((isDisplayed())))
     }
 }

@@ -1,17 +1,19 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    namespace = "com.jesusbadenas.kotlin_clean_architecture_project.test"
+    compileSdk = rootProject.ext.compileSdkVersion
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode rootProject.ext.versionCode
-        versionName rootProject.ext.versionName
         testInstrumentationRunner rootProject.ext.testInstrumentationRunner
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -22,12 +24,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 }
 
@@ -35,12 +37,20 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation rootProject.ext.androidAppCompat
+    implementation rootProject.ext.androidXJUnitKtx
+    implementation rootProject.ext.androidXTestCoreKtx
+    implementation rootProject.ext.androidXTestRunner
     implementation rootProject.ext.archCoreTesting
     implementation rootProject.ext.coroutinesTest
+    implementation rootProject.ext.koinAndroid
     implementation rootProject.ext.koinTest
+    implementation rootProject.ext.koinJunit4Test
+    implementation rootProject.ext.koinJunit5Test
     implementation rootProject.ext.kotlin
     implementation rootProject.ext.lifeCycleLiveDataKtx
+    implementation rootProject.ext.timber
 
     testImplementation rootProject.ext.jUnit
+    testImplementation rootProject.ext.jUnitJupiter
     testImplementation rootProject.ext.mockk
 }
