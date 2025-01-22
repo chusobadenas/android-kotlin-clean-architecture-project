@@ -34,7 +34,7 @@
   </style>
 
   <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
-    <item name="android:textColor">@color/text_primary</item>
+    <item name="android:textColor">@android:color/white</item>
     <item name="backgroundTint">@color/primary_light</item>
   </style>
 
@@ -45,7 +45,7 @@
 
   <style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
     <item name="android:background">@color/primary_light</item>
-    <item name="titleTextColor">@color/text_primary</item>
+    <item name="titleTextColor">@android:color/white</item>
   </style>
 
   <style name="TabStyle">
@@ -59,7 +59,7 @@
 
   <style name="TextViewField">
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_marginTop">@dimen/header_margin</item>
+    <item name="android:layout_marginTop">@dimen/user_field_margin_top</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:textStyle">bold</item>
   </style>

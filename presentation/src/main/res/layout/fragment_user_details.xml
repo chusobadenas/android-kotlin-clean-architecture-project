@@ -33,9 +33,9 @@
                 android:id="@+id/tv_fullname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/header_margin"
                 android:freezesText="true"
                 android:gravity="center"
+                android:paddingVertical="@dimen/header_padding"
                 android:text="@{viewModel.user.name}"
                 android:textSize="@dimen/header_text_size"
                 android:textStyle="bold" />
@@ -43,8 +43,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
                 android:orientation="vertical">
 
                 <TextView
