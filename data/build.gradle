@@ -1,17 +1,19 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    namespace = "com.jesusbadenas.kotlin_clean_architecture_project.data"
+    compileSdkVersion = rootProject.ext.compileSdkVersion
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode rootProject.ext.versionCode
-        versionName rootProject.ext.versionName
         testInstrumentationRunner rootProject.ext.testInstrumentationRunner
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -22,18 +24,30 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     packagingOptions {
         exclude 'META-INF/ASL2.0'
         exclude 'META-INF/AL2.0'
         exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/LICENSE.md'
+        exclude 'META-INF/LICENSE-notice.md'
+    }
+
+    testOptions {
+        unitTests {
+            all {
+                useJUnitPlatform()
+            }
+            includeAndroidResources = true
+            returnDefaultValues = true
+        }
     }
 }
 
@@ -46,19 +60,32 @@ dependencies {
     implementation rootProject.ext.koinAndroid
     implementation rootProject.ext.kotlin
     implementation rootProject.ext.loggingInterceptor
+    implementation rootProject.ext.moshi
+    implementation rootProject.ext.moshiAdapters
     implementation rootProject.ext.okHttp
     implementation rootProject.ext.retrofit
     implementation rootProject.ext.retrofitConverterMoshi
     implementation rootProject.ext.room
     implementation rootProject.ext.roomKtx
+    implementation rootProject.ext.timber
 
     kapt rootProject.ext.roomCompiler
 
     testImplementation project(':test')
+    testImplementation rootProject.ext.androidXJUnitKtx
     testImplementation rootProject.ext.archCoreTesting
     testImplementation rootProject.ext.coroutinesTest
     testImplementation rootProject.ext.jUnit
+    testImplementation rootProject.ext.jUnitJupiter
+    testImplementation rootProject.ext.koinTest
+    testImplementation rootProject.ext.koinJunit4Test
+    testImplementation rootProject.ext.koinJunit5Test
     testImplementation rootProject.ext.mockk
+    testImplementation rootProject.ext.robolectric
+
+    testRuntimeOnly rootProject.ext.jUnitJupiterEngine
+    testRuntimeOnly rootProject.ext.jUnitPlatformLauncher
+    testRuntimeOnly rootProject.ext.jUnitVintageEngine
 
     androidTestImplementation project(':test')
     androidTestImplementation rootProject.ext.androidXJUnitKtx
@@ -66,6 +93,8 @@ dependencies {
     androidTestImplementation rootProject.ext.androidXTestRules
     androidTestImplementation rootProject.ext.androidXTestRunner
     androidTestImplementation rootProject.ext.coroutinesTest
+    androidTestImplementation rootProject.ext.koinTest
+    androidTestImplementation rootProject.ext.koinJunit4Test
     androidTestImplementation rootProject.ext.mockkAndroid
     androidTestImplementation rootProject.ext.roomTest
 }

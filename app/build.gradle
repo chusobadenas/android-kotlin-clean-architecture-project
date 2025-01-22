@@ -1,9 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
     id 'kotlin-kapt'
-    id 'androidx.navigation.safeargs.kotlin'
 }
 
 // Create a variable called keystorePropertiesFile, and initialize it to your
@@ -17,8 +15,8 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    namespace = "com.jesusbadenas.kotlin_clean_architecture_project"
+    compileSdk = rootProject.ext.compileSdkVersion
 
     defaultConfig {
         applicationId "com.jesusbadenas.kotlin_clean_architecture_project"
@@ -27,7 +25,6 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
         testInstrumentationRunner rootProject.ext.testInstrumentationRunner
-        multiDexEnabled true
     }
 
     signingConfigs {
@@ -39,31 +36,34 @@ android {
         }
     }
 
+    buildFeatures {
+        buildConfig = true
+        dataBinding = true
+        viewBinding = true
+    }
+
     buildTypes {
         debug {
             debuggable true
             minifyEnabled false
-            shrinkResources false
+            shrinkResources = false
         }
         release {
             debuggable false
             minifyEnabled true
-            shrinkResources true
+            shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        coreLibraryDesugaringEnabled = true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
-
-    dataBinding {
-        enabled = true
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     lintOptions {
@@ -74,10 +74,15 @@ android {
         exclude 'META-INF/ASL2.0'
         exclude 'META-INF/AL2.0'
         exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/LICENSE.md'
+        exclude 'META-INF/LICENSE-notice.md'
     }
 
     testOptions {
         unitTests {
+            all {
+                useJUnitPlatform()
+            }
             includeAndroidResources = true
             returnDefaultValues = true
         }
@@ -87,53 +92,25 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':data')
-    api project(':domain')
+    implementation project(':domain')
+    implementation project(':presentation')
 
     implementation rootProject.ext.androidAppCompat
-    implementation rootProject.ext.androidConstraintLayout
     implementation rootProject.ext.androidCoreKtx
-    implementation rootProject.ext.androidMaterial
-    implementation rootProject.ext.archCoreCommon
-    implementation rootProject.ext.coroutinesAndroid
-    implementation rootProject.ext.coroutinesCore
-    implementation rootProject.ext.fragment
-    implementation rootProject.ext.glide
     implementation rootProject.ext.koinAndroid
-    implementation rootProject.ext.koinFragment
-    implementation rootProject.ext.koinViewModel
     implementation rootProject.ext.kotlin
-    implementation rootProject.ext.lifeCycleExtensions
-    implementation rootProject.ext.lifeCycleLiveDataKtx
-    implementation rootProject.ext.lifeCycleViewModelKtx
-    implementation rootProject.ext.loggingInterceptor
-    implementation rootProject.ext.multidex
-    implementation rootProject.ext.navigationFeature
-    implementation rootProject.ext.navigationFragment
-    implementation rootProject.ext.navigationUi
-    implementation rootProject.ext.recyclerView
-    implementation rootProject.ext.retrofit
-    implementation rootProject.ext.swipeRefreshLayout
     implementation rootProject.ext.timber
 
-    kapt rootProject.ext.dataBindingCompiler
-    kapt rootProject.ext.glideCompiler
-    kapt rootProject.ext.lifeCycleCompiler
-
-    testImplementation project(':test')
-    testImplementation rootProject.ext.archCoreTesting
-    testImplementation rootProject.ext.coroutinesTest
-    testImplementation rootProject.ext.jUnit
-    testImplementation rootProject.ext.mockk
+    coreLibraryDesugaring rootProject.ext.desugar
 
     androidTestImplementation project(':test')
     androidTestImplementation rootProject.ext.androidXJUnitKtx
     androidTestImplementation rootProject.ext.androidXTestCoreKtx
     androidTestImplementation rootProject.ext.androidXTestRules
     androidTestImplementation rootProject.ext.androidXTestRunner
-    androidTestImplementation rootProject.ext.coroutinesTest
     androidTestImplementation rootProject.ext.espresso
     androidTestImplementation rootProject.ext.espressoContrib
     androidTestImplementation rootProject.ext.fragmentTest
-    androidTestImplementation rootProject.ext.mockkAndroid
-    androidTestImplementation rootProject.ext.navigationTest
+    androidTestImplementation rootProject.ext.koinTest
+    androidTestImplementation rootProject.ext.koinJunit4Test
 }
