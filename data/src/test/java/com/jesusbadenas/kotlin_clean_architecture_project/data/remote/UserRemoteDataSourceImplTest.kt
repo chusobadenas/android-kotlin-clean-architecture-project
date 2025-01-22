@@ -64,7 +64,6 @@ class UserRemoteDataSourceImplTest : CustomKoinJUnit4Test(dataTestModule) {
 
         coVerify { usersApi.users() }
 
-        Assert.assertNotNull(result)
         Assert.assertEquals(1, result.size)
         Assert.assertEquals(userDTO, result[0])
     }

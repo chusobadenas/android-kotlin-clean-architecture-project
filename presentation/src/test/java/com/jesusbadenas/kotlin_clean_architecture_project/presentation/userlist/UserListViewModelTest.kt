@@ -8,6 +8,7 @@ import com.jesusbadenas.kotlin_clean_architecture_project.presentation.R
 import com.jesusbadenas.kotlin_clean_architecture_project.presentation.di.presentationTestModule
 import com.jesusbadenas.kotlin_clean_architecture_project.test.CustomKoinJUnit4Test
 import com.jesusbadenas.kotlin_clean_architecture_project.test.KoinTestApp
+import com.jesusbadenas.kotlin_clean_architecture_project.test.exception.TestException
 import com.jesusbadenas.kotlin_clean_architecture_project.test.extension.getOrAwaitValue
 import com.jesusbadenas.kotlin_clean_architecture_project.test.rule.CoroutinesTestRule
 import io.mockk.every
@@ -43,11 +44,35 @@ class UserListViewModelTest : CustomKoinJUnit4Test(presentationTestModule) {
     }
 
     @Test
+    fun `test load user list error`() = coroutineRule.runTest {
+        val exception = TestException()
+        val userListError = slot<(Throwable) -> Unit>()
+        every {
+            getUsersUseCase.invoke(
+                scope = any(),
+                onError = capture(userListError),
+                onResult = any()
+            )
+        } answers {
+            userListError.captured(exception)
+        }
+
+        viewModel.loadUserList()
+        val uiError = viewModel.uiError.getOrAwaitValue()
+
+        Assert.assertNotNull(uiError)
+        Assert.assertEquals(R.string.error_message_generic, uiError.messageTextId)
+        Assert.assertEquals(R.string.btn_text_retry, uiError.buttonTextId)
+        Assert.assertEquals(exception, uiError.throwable)
+    }
+
+    @Test
     fun `test load user list empty`() = coroutineRule.runTest {
         val userListResult = slot<(List<User>?) -> Unit>()
         every {
             getUsersUseCase.invoke(
                 scope = any(),
+                onError = any(),
                 onResult = capture(userListResult)
             )
         } answers {
@@ -59,6 +84,7 @@ class UserListViewModelTest : CustomKoinJUnit4Test(presentationTestModule) {
         Assert.assertNotNull(uiError)
         Assert.assertEquals(R.string.error_message_empty_list, uiError.messageTextId)
         Assert.assertEquals(R.string.btn_text_retry, uiError.buttonTextId)
+        Assert.assertNull(uiError.throwable)
     }
 
     @Test
@@ -68,6 +94,7 @@ class UserListViewModelTest : CustomKoinJUnit4Test(presentationTestModule) {
         every {
             getUsersUseCase.invoke(
                 scope = any(),
+                onError = any(),
                 onResult = capture(userListResult)
             )
         } answers {

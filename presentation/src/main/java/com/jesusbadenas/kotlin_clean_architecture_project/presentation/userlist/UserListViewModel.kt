@@ -17,18 +17,23 @@ class UserListViewModel(
         get() = _userList
 
     fun loadUserList() {
-        getUsersUseCase.invoke(scope = viewModelScope) { list ->
-            if (list.isEmpty()) {
-                showError(
-                    messageTextId = R.string.error_message_empty_list,
-                    buttonTextId = R.string.btn_text_retry
-                ) {
+        getUsersUseCase.invoke(
+            scope = viewModelScope,
+            onError = { throwable ->
+                showError(throwable) {
                     onRetryAction()
                 }
-            } else {
-                showLoading(false)
-                _userList.value = list
+            },
+            onResult = { list ->
+                if (list.isEmpty()) {
+                    showError(messageTextId = R.string.error_message_empty_list) {
+                        onRetryAction()
+                    }
+                } else {
+                    showLoading(false)
+                    _userList.value = list
+                }
             }
-        }
+        )
     }
 }

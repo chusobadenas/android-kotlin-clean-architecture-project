@@ -72,6 +72,21 @@ class UserRepositoryImplTest : CustomKoinJUnit4Test(dataTestModule) {
     }
 
     @Test
+    fun `test get users from database success`() {
+        val localUsers = userEntity.toList()
+        coEvery { userLocalDataSource.getUsers() } returns localUsers
+
+        val result = runBlocking {
+            userDataRepository.getUsers()
+        }
+
+        coVerify { userLocalDataSource.getUsers() }
+
+        Assert.assertEquals(1, result.size)
+        Assert.assertEquals(USER_ID, result[0].id)
+    }
+
+    @Test
     fun `test get user from network success`() {
         coEvery { userLocalDataSource.getUser(USER_ID) } returns null
         coEvery { usersRemoteDataSource.getUser(USER_ID) } returns userDTO
@@ -87,6 +102,20 @@ class UserRepositoryImplTest : CustomKoinJUnit4Test(dataTestModule) {
 
         Assert.assertNotNull(result)
         Assert.assertEquals(userResult, result)
+    }
+
+    @Test
+    fun `test get user from database success`() {
+        coEvery { userLocalDataSource.getUser(USER_ID) } returns userEntity
+
+        val result = runBlocking {
+            userDataRepository.getUser(USER_ID)
+        }
+
+        coVerify { userLocalDataSource.getUser(USER_ID) }
+
+        Assert.assertNotNull(result)
+        Assert.assertEquals(USER_ID, result?.id)
     }
 
     companion object {

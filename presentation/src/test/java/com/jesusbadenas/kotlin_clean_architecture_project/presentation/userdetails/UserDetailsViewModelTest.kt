@@ -93,13 +93,12 @@ class UserDetailsViewModelTest : CustomKoinJUnit4Test(presentationTestModule) {
     @Test
     fun `test load user details success`() = coroutineRule.runTest {
         val user = User(USER_ID)
-        val userDetailsError = slot<(Throwable) -> Unit>()
         val userDetailsResult = slot<(User?) -> Unit>()
         every {
             getUserUseCase.invoke(
                 scope = any(),
                 params = GetUserUseCase.Params(userId = USER_ID),
-                onError = capture(userDetailsError),
+                onError = any(),
                 onResult = capture(userDetailsResult)
             )
         } answers {

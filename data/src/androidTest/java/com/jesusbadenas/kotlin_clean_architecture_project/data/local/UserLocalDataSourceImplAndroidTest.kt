@@ -20,7 +20,7 @@ import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class UserLocalDataSourceAndroidTest {
+class UserLocalDataSourceImplAndroidTest {
 
     @get:Rule
     val coroutineRule = CoroutinesTestRule()
@@ -53,7 +53,7 @@ class UserLocalDataSourceAndroidTest {
         }
 
         Assert.assertEquals(1, result.size)
-        Assert.assertEquals(userEntity.id, result[0].id)
+        Assert.assertEquals(userEntity, result[0])
     }
 
     @Test
@@ -65,7 +65,7 @@ class UserLocalDataSourceAndroidTest {
         }
 
         Assert.assertNotNull(result)
-        Assert.assertEquals(userEntity.id, result?.id)
+        Assert.assertEquals(userEntity, result)
     }
 
     companion object {

@@ -49,7 +49,7 @@ class UserLocalDataSourceImplTest : CustomKoinJUnit4Test(dataTestModule) {
         coEvery { usersDao.getAll() } throws exception
 
         runBlocking {
-            dataSource.getUsers().firstOrNull()
+            dataSource.getUsers()
         }
 
         coVerify { usersDao.getAll() }
@@ -92,7 +92,7 @@ class UserLocalDataSourceImplTest : CustomKoinJUnit4Test(dataTestModule) {
         coVerify { usersDao.getById(USER_ID) }
 
         Assert.assertNotNull(result)
-        Assert.assertEquals(USER_ID, result?.id)
+        Assert.assertEquals(userEntity, result)
     }
 
     @Test

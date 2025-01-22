@@ -20,10 +20,10 @@ class UserRepositoryImpl(
         val localUsers = userLocalDataSource.getUsers()
         if (localUsers.isEmpty()) {
             // If not found, get from server
-            val remoteUsers = userRemoteDataSource.getUsers().map { it.toUser() }
-            val entities = remoteUsers.map { it.toUserEntity() }
-            userLocalDataSource.insertUsers(entities)
-            remoteUsers
+            userRemoteDataSource.getUsers().map { it.toUser() }.also { remoteUsers ->
+                val entities = remoteUsers.map { it.toUserEntity() }
+                userLocalDataSource.insertUsers(entities)
+            }
         } else {
             // Return database users
             localUsers.map { it.toUser() }
